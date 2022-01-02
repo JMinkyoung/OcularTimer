@@ -16,7 +16,9 @@ const Home: NextPage = () => {
 
   return (
     <Wrapper>
-    <TimerClock />
+    {/* 여기서 redux를 통해서 저장된 타이머 정보를 가져올 예정 */}
+    <span>여기엔 모드 이름이 들어갈 예정</span>
+    <TimerClock target={60} color={"#22577E"}/>
       {/* <Mobile>
         <div style={{color:"red"}}>
           <h1>{mobileTest}</h1>
