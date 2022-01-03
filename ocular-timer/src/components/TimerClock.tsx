@@ -1,6 +1,7 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { Mobile, PC } from '../components/MediaQuery';
+import { useMediaQuery } from "react-responsive"
 
 interface ClockCircleSvg {
   time: number;
@@ -11,6 +12,7 @@ interface ClockCircle {
   targetTime: number;
   done: boolean;
   circumference: number;
+  pause: boolean;
 }
 
 interface Iprops {
@@ -55,11 +57,12 @@ const ClockCircle = styled.circle<ClockCircle>`
   stroke: #ffff;
   cx: 350;
   cy: 350;
-  r: 150;
-  stroke-width: 300;
+  r: 350;
+  stroke-width: 700;
   stroke-dasharray: ${(props)=>props.circumference};
   animation: ${(props)=> (!props.done && props.time===0) ? null : `dash ${props.targetTime}s linear infinite`};
   visibility: ${(props)=> props.done || props.time===0 ? 'hidden' : 'visible'};
+  animation-play-state: ${(props)=> props.pause ? "paused" : "running"};
 
   @keyframes dash {
     from{
@@ -71,50 +74,86 @@ const ClockCircle = styled.circle<ClockCircle>`
   }
 
   @media ${(props) => props.theme.mobile} {
-    cx: 125;
-    cy: 125;
-    r: 75;
-    stroke-width: 100;
+    cx: 175;
+    cy: 175;
+    r: 175;
+    stroke-width: 350;
   }
 `;
 
 const TimerClock = (props: Iprops) => {
   const [time, setTime] = useState(0);
   const [done, setDone] = useState(false);
+  const [pause, setPause] = useState(false);
+  const [started, setStarted] = useState(false);
+  const isMobile = useMediaQuery({
+    query: "(max-width:767px)"
+  });
 
-  const timeRef:any = useRef();
-  const radius = 150;
-  // pc 화면에선 150
+  const radius = isMobile ? 175 : 350;
   const circumference = 2 * Math.PI * radius;
  
   const target: number = props.target;
 
-  const tick = () => {
-    setTime(prevTime => prevTime+1);
-  }
-
-  const onClickButton = () => {
-    timeRef.current = setInterval(()=> tick(), 1000); 
-  }
 
   useEffect(()=>{
+    const interval = setInterval(()=> {
+      if(!pause && started){
+        setTime(prevTime => prevTime+1);
+      }
+    }, 1000);
+
     if(time === target){
-      clearInterval(timeRef.current);
+      clearInterval(interval);
       setDone(true);
       setTime(0);
+      setStarted(false);
     }
+    return () => clearInterval(interval);
   });
 
-  return (
-    <ClockWrapper>
-    <ClockCircleWrapper time={time}>
-      <circle cx="350" cy="350" r="299" fill={props.color} />
+  const onClickStart = () => {
+    setPause(false);
+    setStarted(true);
+    setDone(false);
+  }
 
-    <ClockCircle time={time} targetTime={target} done={done}circumference={circumference} />
-    </ClockCircleWrapper>
-    {time}
-    <button onClick={onClickButton}>시작 버튼</button>
-    </ClockWrapper>
+  const onClickPause = () => {
+    setPause(true);
+  }
+
+
+  return (
+  <>
+    <PC>
+      <div>
+        <ClockWrapper>
+        <ClockCircleWrapper time={time}>
+          <circle cx="350" cy="350" r="350" fill={props.color} />
+
+        <ClockCircle time={time} targetTime={target} done={done} circumference={circumference} pause={pause} />
+        </ClockCircleWrapper>
+        {time}
+        </ClockWrapper>
+        <button onClick={onClickStart}>시작 버튼</button>
+        <button onClick={onClickPause}>정지 버튼</button>
+      </div>
+    </PC>
+
+    <Mobile>
+      <div>
+        <ClockWrapper>
+        <ClockCircleWrapper time={time}>
+        <circle cx="175" cy="175" r="175" fill={props.color} />
+        <ClockCircle time={time} targetTime={target} done={done} circumference={circumference} pause={pause} />
+        </ClockCircleWrapper>
+        {time}
+        </ClockWrapper>
+        <button onClick={onClickStart}>시작 버튼</button>
+        <button onClick={onClickPause}>정지 버튼</button>
+      </div>
+    </Mobile>
+  </>
   );
 }
 

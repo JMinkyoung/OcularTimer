@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import React from 'react';
-import { Mobile, PC } from '../components/MediaQuery';
 import TimerClock from '../components/TimerClock';
 import styled from 'styled-components';
 
