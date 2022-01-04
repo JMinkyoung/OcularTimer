@@ -2,6 +2,12 @@ import reset from 'styled-reset'
 import { createGlobalStyle } from 'styled-components'
 
     const GlobalStyle = createGlobalStyle`
+      .pc {
+        --c: 2199;
+      }
+      .mobile {
+        --c: 1099;
+      }
       ${reset}
       * {
         box-sizing: border-box;
@@ -21,7 +27,18 @@ import { createGlobalStyle } from 'styled-components'
       h1, h2, h3, h4, h5, h6{
         font-family:'Maven Pro', sans-serif;
       }
-
+      .inner_circle {
+        stroke: white;
+      }
+      @keyframes dash {
+          from{
+            stroke-dashoffset: var(--c);
+          }
+          to {
+            stroke-dashoffset:0;
+          }
+      }
+/* 
       @media only screen and (max-width: 768px) {
         body {
           font-size: 12px;
@@ -32,7 +49,7 @@ import { createGlobalStyle } from 'styled-components'
         body {
           font-size: 10px;
         }
-      }
+      } */
     `
 
     export default GlobalStyle;
