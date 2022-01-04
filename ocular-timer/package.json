@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-redux": "^7.1.21",
     "@types/react-responsive": "^8.0.5",
     "@types/styled-components": "^5.1.18",
     "add": "^2.0.6",
@@ -16,7 +17,9 @@
     "react": "17.0.2",
     "react-colorful": "^5.5.1",
     "react-dom": "17.0.2",
+    "react-redux": "^7.2.6",
     "react-responsive": "^9.0.0-beta.5",
+    "redux": "^4.1.2",
     "styled-components": "^5.3.3",
     "styled-reset": "^4.3.4"
   },

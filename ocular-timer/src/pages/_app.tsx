@@ -3,9 +3,15 @@ import Head from 'next/head';
 import { ThemeProvider } from 'styled-components';
 import theme from '../../public/styles/theme';
 import GlobalStyle from '../../public/styles/global-styles';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from '../modules';
+
+const store = createStore(rootReducer);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return(
+    <Provider store={store}>
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Head>
@@ -14,6 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <Component {...pageProps} />
     </ThemeProvider>
+    </Provider>
   )
 }
 

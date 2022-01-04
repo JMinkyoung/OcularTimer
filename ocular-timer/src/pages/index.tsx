@@ -2,6 +2,8 @@ import type { NextPage } from 'next'
 import React from 'react';
 import TimerClock from '../components/TimerClock';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -9,15 +11,25 @@ const Wrapper = styled.div`
   height: 100%;
 
 `;
+
+type TimerProps = {
+  id: number;
+  title: string;
+  time: number;
+  color: string;
+}
+
+
 const Home: NextPage = () => {
   const mobileTest: string = "모바일 메인페이지 테스트입니다.";
   const pcTest: string = "PC 메인페이지 테스트입니다.";
 
+  const timerData: TimerProps[] = useSelector((state: RootState) => state.timer);
   return (
     <Wrapper>
     {/* 여기서 redux를 통해서 저장된 타이머 정보를 가져올 예정 */}
-    <span>여기엔 모드 이름이 들어갈 예정</span>
-    <TimerClock target={60} color={"#22577E"}/>
+    <span>{timerData[0].title}</span>
+    <TimerClock target={timerData[0].time} color={timerData[0].color}/>
       {/* <Mobile>
         <div style={{color:"red"}}>
           <h1>{mobileTest}</h1>
