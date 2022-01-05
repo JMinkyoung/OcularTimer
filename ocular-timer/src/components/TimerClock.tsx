@@ -124,7 +124,7 @@ const TimerClock = (props: Iprops) => {
     <PC>
       <div>
         <ClockWrapper>
-          <ClockCircleWrapper time={time}>
+          <ClockCircleWrapper onClick={() => console.log("테스트")} time={time}>
             <circle cx="350" cy="350" r="350" fill={props.color} />
             <circle 
             className="inner_circle pc"

@@ -19,7 +19,7 @@ type TimerAction = | ReturnType<typeof create> | ReturnType<typeof load> | Retur
 type TimerData = {
   id: number;
   title: string;
-  time: number;
+  time: number[];
   color: string;
 }
 // type TimerState = {
@@ -29,8 +29,8 @@ type TimerData = {
 const initialState: TimerData[] = [
   {
     id: 1,
-    title: "뽀모도로",
-    time: 360,
+    title: "뽀모도로 🍅",
+    time: [360],
     color: "#22577E"
   }
 ];
