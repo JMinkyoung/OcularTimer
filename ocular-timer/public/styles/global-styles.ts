@@ -1,6 +1,5 @@
 import reset from 'styled-reset'
 import { createGlobalStyle } from 'styled-components'
-
     const GlobalStyle = createGlobalStyle`
       .pc {
         --c: 2199;
@@ -10,22 +9,20 @@ import { createGlobalStyle } from 'styled-components'
       }
       ${reset}
       * {
+        font-family: 'Noto Sans KR', sans-serif;
         box-sizing: border-box;
       }
       body{
-        font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+        font-family: 'Noto Sans KR', sans-serif;
       }
       a {
         color: inherit;
         text-decoration: none;
       }
       input, button {
-        /* background-color: transparent; */
-        /* border: none;
-        outline: none; */
+        font-family: 'Noto Sans KR', sans-serif;
       }
       h1, h2, h3, h4, h5, h6{
-        font-family:'Maven Pro', sans-serif;
       }
       .inner_circle {
         stroke: white;
@@ -38,18 +35,6 @@ import { createGlobalStyle } from 'styled-components'
             stroke-dashoffset:0;
           }
       }
-/* 
-      @media only screen and (max-width: 768px) {
-        body {
-          font-size: 12px;
-        }
-      }
-
-      @media only screen and (max-width: 576px) {
-        body {
-          font-size: 10px;
-        }
-      } */
     `
 
     export default GlobalStyle;

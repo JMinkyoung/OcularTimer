@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { Mobile, PC } from '../components/MediaQuery';
-import { useMediaQuery } from "react-responsive"
+import { useMediaQuery } from "react-responsive";
+
 interface ClockCircleSvg {
   time: number;
 }
@@ -20,6 +21,13 @@ interface Iprops {
 }
 
 const ClockWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  flex-direction: column ;
+`;
+
+const ClockImgWrapper = styled.div`
   display: flex;
   margin: auto;
   margin-top: 3%;
@@ -52,7 +60,7 @@ const ClockCircleWrapper = styled.svg<ClockCircleSvg>`
 `;
 
 const ClockCircle = styled.circle<ClockCircle>`
-  fill: none;
+  fill: none; 
   stroke: #ffff;
   cx: 350;
   cy: 350;
@@ -76,6 +84,10 @@ const ClockCircle = styled.circle<ClockCircle>`
     r: 175;
     stroke-width: 350;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
 `;
 
 const TimerClock = (props: Iprops) => {
@@ -122,8 +134,8 @@ const TimerClock = (props: Iprops) => {
   return (
   <>
     <PC>
-      <div>
-        <ClockWrapper>
+      <ClockWrapper>
+        <ClockImgWrapper>
           <ClockCircleWrapper onClick={() => console.log("테스트")} time={time}>
             <circle cx="350" cy="350" r="350" fill={props.color} />
             <circle 
@@ -139,16 +151,18 @@ const TimerClock = (props: Iprops) => {
                     animationPlayState: pause ? "paused" : "running"}}
             />
           </ClockCircleWrapper>
-          {time}
-        </ClockWrapper>
-        <button onClick={onClickStart}>시작 버튼</button>
-        <button onClick={onClickPause}>정지 버튼</button>
-      </div>
+        </ClockImgWrapper>
+        {target - time}초
+        <ButtonWrapper>
+          <button onClick={onClickStart}>시작 버튼</button>
+          <button onClick={onClickPause}>정지 버튼</button>
+        </ButtonWrapper>
+      </ClockWrapper>
     </PC>
 
     <Mobile>
-      <>
-        <ClockWrapper>
+    <ClockWrapper>
+        <ClockImgWrapper>
           <ClockCircleWrapper time={time}>
           <circle cx="175" cy="175" r="175" fill={props.color} />
           <circle 
@@ -165,11 +179,13 @@ const TimerClock = (props: Iprops) => {
           }}
             />
           </ClockCircleWrapper>
-          {time}
-        </ClockWrapper>
-        <button onClick={onClickStart}>시작 ddd버튼</button>
-        <button onClick={onClickPause}>정지 버튼</button>
-      </>
+        </ClockImgWrapper>
+        {target - time}초        
+        <ButtonWrapper>
+          <button onClick={onClickStart}>시작 버튼</button>
+          <button onClick={onClickPause}>정지 버튼</button>
+        </ButtonWrapper>
+      </ClockWrapper>
     </Mobile>
   </>
   );
