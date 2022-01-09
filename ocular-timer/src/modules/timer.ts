@@ -16,21 +16,30 @@ export const deleteTimer = () => ({
 
 type TimerAction = | ReturnType<typeof create> | ReturnType<typeof load> | ReturnType<typeof deleteTimer>;
 
+
+type TimeDataType = {
+  subtitle: string;
+  time: number;
+}
+
 type TimerData = {
   id: number;
   title: string;
-  time: number[];
+  time: TimeDataType[];
   color: string;
 }
-// type TimerState = {
-//   TimerDatas: TimerData[];
-// };
 
 const initialState: TimerData[] = [
   {
     id: 1,
     title: "뽀모도로 🍅",
-    time: [360],
+    time: [{"subtitle" : "공부", "time": 1500}, {"subtitle" : "휴식", "time": 300}],
+    color: "#22577E"
+  },
+  {
+    id: 2,
+    title: "xdsd 🍅",
+    time: [{"subtitle" : "공부", "time": 1500}, {"subtitle" : "휴식", "time": 300}],
     color: "#22577E"
   }
 ];

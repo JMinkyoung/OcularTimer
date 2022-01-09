@@ -15,35 +15,51 @@ interface ClockCircle {
   pause: boolean;
 }
 
-interface Iprops {
-  target: number;
+type TimeDataType = {
+  subtitle: string;
+  time: number;
+}
+
+type TimerData = {
+  id: number;
+  title: string;
+  time: TimeDataType[];
   color: string;
 }
 
+interface Iprops {
+  timeData: TimerData;
+}
+
 const ClockWrapper = styled.div`
+  width: 800px;
+  height: 800px;
   display: flex;
   align-items: center;
   justify-content:center;
-  flex-direction: column ;
+  flex-direction: column;
+
+  @media ${(props) => props.theme.mobile} {
+    width: 400px;
+    height: 400px;
+  }
 `;
 
 const ClockImgWrapper = styled.div`
   display: flex;
   margin: auto;
-  margin-top: 3%;
+  margin-top: 0;
   width: 800px;
   height: 800px;
 
   @media ${(props) => props.theme.tablet} {
     width: 100%;
     height: auto;
-    margin-top: 15%;
   }
 
   @media ${(props) => props.theme.mobile} {
     width: 100%;
     height: auto;
-    margin-top: 35%;
   }
 `;
 
@@ -92,9 +108,12 @@ const ButtonWrapper = styled.div`
 
 const TimerClock = (props: Iprops) => {
   const [time, setTime] = useState(0);
+  const [timeIdx, setTimeIdx] = useState(0);
   const [done, setDone] = useState(false);
   const [pause, setPause] = useState(false);
   const [started, setStarted] = useState(false);
+
+
   const isMobile = useMediaQuery({
     query: "(max-width:767px)"
   });
@@ -102,7 +121,8 @@ const TimerClock = (props: Iprops) => {
   const radius = isMobile ? 175 : 350;
   const circumference = 2 * Math.PI * radius;
 
-  const target: number = props.target;
+  let target: number = props.timeData.time[timeIdx]["time"];
+  const timeLen: number = props.timeData.time.length;
 
   useEffect(()=>{
     const interval = setInterval(()=> {
@@ -111,11 +131,18 @@ const TimerClock = (props: Iprops) => {
       }
     }, 1000);
 
-    if(time === target){
+    if(time === target && timeIdx !== timeLen-1){
       clearInterval(interval);
       setDone(true);
       setTime(0);
       setStarted(false);
+      setTimeIdx(prevIndex => prevIndex+1);
+    }else if(time === target && timeIdx === timeLen-1){
+      clearInterval(interval);
+      setDone(true);
+      setTime(0);
+      setStarted(false);
+      setTimeIdx(0);
     }
     return () => clearInterval(interval);
   });
@@ -137,7 +164,7 @@ const TimerClock = (props: Iprops) => {
       <ClockWrapper>
         <ClockImgWrapper>
           <ClockCircleWrapper onClick={() => console.log("테스트")} time={time}>
-            <circle cx="350" cy="350" r="350" fill={props.color} />
+            <circle cx="350" cy="350" r="350" fill={props.timeData.color} />
             <circle 
             className="inner_circle pc"
             fill='none'
@@ -153,6 +180,7 @@ const TimerClock = (props: Iprops) => {
           </ClockCircleWrapper>
         </ClockImgWrapper>
         {target - time}초
+        {props.timeData.time[timeIdx].subtitle}
         <ButtonWrapper>
           <button onClick={onClickStart}>시작 버튼</button>
           <button onClick={onClickPause}>정지 버튼</button>
@@ -164,7 +192,7 @@ const TimerClock = (props: Iprops) => {
     <ClockWrapper>
         <ClockImgWrapper>
           <ClockCircleWrapper time={time}>
-          <circle cx="175" cy="175" r="175" fill={props.color} />
+          <circle cx="175" cy="175" r="175" fill={props.timeData.color} />
           <circle 
             className="inner_circle mobile"
             fill='none'
