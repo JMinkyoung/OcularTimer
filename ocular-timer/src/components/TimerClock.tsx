@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import { Mobile, PC } from '../components/MediaQuery';
 import { useMediaQuery } from "react-responsive";
+import { Mobile, PC } from '../components/MediaQuery';
 
 interface ClockCircleSvg {
   time: number;
@@ -112,18 +112,30 @@ const TimerClock = (props: Iprops) => {
   const [done, setDone] = useState(false);
   const [pause, setPause] = useState(false);
   const [started, setStarted] = useState(false);
+  const [radius, setRadius] = useState(350);
+  const [circumference, setCircumference] = useState(2199);
+  const [className, setClassName] = useState("inner_circle pc");
 
+  let target: number = props.timeData.time[timeIdx]["time"];
+  const timeLen: number = props.timeData.time.length;
 
   const isMobile = useMediaQuery({
     query: "(max-width:767px)"
   });
 
-  const radius = isMobile ? 175 : 350;
-  const circumference = 2 * Math.PI * radius;
+  useEffect(()=>{
+    if(isMobile){
+      setRadius(175);
+      setCircumference(1099);
+      setClassName("inner_circle mobile");
+    }else{
+      setRadius(350);
+      setCircumference(2199);
+      setClassName("inner_circle pc");
 
-  let target: number = props.timeData.time[timeIdx]["time"];
-  const timeLen: number = props.timeData.time.length;
-
+    }
+  },[isMobile]);
+  
   useEffect(()=>{
     const interval = setInterval(()=> {
       if(!pause && started){
@@ -159,64 +171,34 @@ const TimerClock = (props: Iprops) => {
 
 
   return (
-  <>
-    <PC>
-      <ClockWrapper>
-        <ClockImgWrapper>
-          <ClockCircleWrapper onClick={() => console.log("테스트")} time={time}>
-            <circle cx="350" cy="350" r="350" fill={props.timeData.color} />
-            <circle 
-            className="inner_circle pc"
-            fill='none'
-            cx= "350" 
-            cy= "350"
-            r= "350"
-            strokeWidth="700"
-            strokeDasharray={circumference}
-            style={{animation: !done && time===0 ? "null" : `dash ${target}s linear infinite`,
-                    visibility: done || time===0 ? 'hidden' : 'visible',
-                    animationPlayState: pause ? "paused" : "running"}}
-            />
-          </ClockCircleWrapper>
-        </ClockImgWrapper>
-        {target - time}초
-        {props.timeData.time[timeIdx].subtitle}
-        <ButtonWrapper>
-          <button onClick={onClickStart}>시작 버튼</button>
-          <button onClick={onClickPause}>정지 버튼</button>
-        </ButtonWrapper>
-      </ClockWrapper>
-    </PC>
-
-    <Mobile>
-    <ClockWrapper>
-        <ClockImgWrapper>
-          <ClockCircleWrapper time={time}>
-          <circle cx="175" cy="175" r="175" fill={props.timeData.color} />
-          <circle 
-            className="inner_circle mobile"
-            fill='none'
-            cx= "175" 
-            cy= "175"
-            r= "175"
-            strokeWidth="350"
-            strokeDasharray={circumference}
-            style={{animation: !done && time===0 ? "" : `dash ${target}s linear infinite`,
-                    visibility: done || time===0 ? 'hidden' : 'visible',
-                    animationPlayState: pause ? "paused" : "running",
-          }}
-            />
-          </ClockCircleWrapper>
-        </ClockImgWrapper>
-        {target - time}초        
-        <ButtonWrapper>
-          <button onClick={onClickStart}>시작 버튼</button>
-          <button onClick={onClickPause}>정지 버튼</button>
-        </ButtonWrapper>
-      </ClockWrapper>
-    </Mobile>
-  </>
-  );
-}
+    <>
+        <ClockWrapper>
+          <ClockImgWrapper>
+            <ClockCircleWrapper time={time}>
+              <circle cx={radius} cy={radius} r={radius} fill={props.timeData.color} />
+              <circle 
+              className={className}
+              fill='none'
+              cx= {radius} 
+              cy= {radius}
+              r= {radius}
+              strokeWidth={radius*2}
+              strokeDasharray={circumference}
+              style={{animation: !done && time===0 ? "null" : `dash ${target}s linear infinite`,
+                      visibility: done || time===0 ? 'hidden' : 'visible',
+                      animationPlayState: pause ? "paused" : "running"}}
+              />
+            </ClockCircleWrapper>
+          </ClockImgWrapper>
+          {target - time}초
+          {props.timeData.time[timeIdx].subtitle}
+          <ButtonWrapper>
+            <button onClick={onClickStart}>시작 버튼</button>
+            <button onClick={onClickPause}>정지 버튼</button>
+          </ButtonWrapper>
+        </ClockWrapper>
+    </>
+    );
+  }
 
 export default TimerClock;
