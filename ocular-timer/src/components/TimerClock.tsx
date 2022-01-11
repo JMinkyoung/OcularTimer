@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from "react-responsive";
-import { Mobile, PC } from '../components/MediaQuery';
 
 interface ClockCircleSvg {
   time: number;
@@ -169,13 +168,21 @@ const TimerClock = (props: Iprops) => {
     setPause(true);
   }
 
-
+  const onClickTimer = () => {
+    if(pause || !started){
+      setPause(false);
+      setStarted(true);
+      setDone(false);
+    }else{
+      setPause(true);
+    }
+  }
   return (
     <>
         <ClockWrapper>
           <ClockImgWrapper>
-            <ClockCircleWrapper time={time}>
-              <circle cx={radius} cy={radius} r={radius} fill={props.timeData.color} />
+            <ClockCircleWrapper time={time} style={{cursor: 'pointer'}} onClick={onClickTimer}>
+              <circle cx={radius} cy={radius} r={radius} fill={props.timeData.color}/>
               <circle 
               className={className}
               fill='none'

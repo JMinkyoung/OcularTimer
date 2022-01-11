@@ -10,7 +10,6 @@ import { createGlobalStyle } from 'styled-components'
       ${reset}
       * {
         font-family: 'Noto Sans KR', sans-serif;
-        box-sizing: border-box;
       }
       body{
         font-family: 'Noto Sans KR', sans-serif;
@@ -19,13 +18,19 @@ import { createGlobalStyle } from 'styled-components'
         color: inherit;
         text-decoration: none;
       }
-      input, button {
-        font-family: 'Noto Sans KR', sans-serif;
+      button {
+        cursor: pointer;
       }
       h1, h2, h3, h4, h5, h6{
       }
       .inner_circle {
         stroke: white;
+      }
+      .rhap_play-pause-button{
+        font-size: 35px;
+      }
+      .rhap_container {
+        -webkit-box-shadow: none;
       }
       @keyframes dash {
           from{
