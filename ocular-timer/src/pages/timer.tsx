@@ -1,6 +1,8 @@
 import type { NextPage } from 'next'
 import React from 'react';
 import TimerClock from '../components/TimerClock';
+import NavigationBar from '../components/NavigationBar';
+
 import AudioPlayer,{ RHAP_UI }  from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css'; 
 import styled from 'styled-components';
@@ -53,8 +55,12 @@ const timer: NextPage = () => {
   return (
     <PageWrapper>
     {/* 여기서 redux를 통해서 저장된 타이머 정보를 가져올 예정 */}
+    <NavigationBar/>
       <ClockComponentWrapper>
         <TimerTitle>{timerData[1].title}</TimerTitle>
+        {/* <TimerTitle>
+          <TimerDropDown timeData={timerData} currentTitle={timerData[1].title} />
+        </TimerTitle> */}
         <TimerClock timeData={timerData[1]}/>
       </ClockComponentWrapper>
 
