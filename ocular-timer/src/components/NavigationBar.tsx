@@ -1,16 +1,34 @@
 import styled from 'styled-components';
 import { useMediaQuery } from "react-responsive";
 import { RiMenuFill, RiCloseFill } from "react-icons/ri";
-import React, {useState} from 'react';
+import React, {SetStateAction, useState} from 'react';
 interface Navigation {
   opened: boolean;
 }
 
+type TimeDataType = {
+  subtitle: string;
+  time: number;
+}
+
+type TimerData = {
+  id: number;
+  title: string;
+  time: TimeDataType[];
+  color: string;
+}
+
+interface Iprops {
+  timeData: TimerData[];
+  setSelectedData: React.Dispatch<React.SetStateAction<number>>;
+}
+
 const MenuButtonContainer = styled.div`
   position: fixed;
+  top: 0;
   left: 0;
   z-index: 999;
-  height: 100%;
+  height: 100px;
 
 `;
 
@@ -28,9 +46,8 @@ const NavigationContainer = styled.div<Navigation>`
 
 const NaviMenuList = styled.ul<{opened: boolean}>`
   width: 150px;
-  padding: 100px;
-  margin: 0;
-  padding-left: 1em;
+  padding: 100px 0px 0px 15px;
+  /* margin-left: 10px; */
   opacity: ${(props) => props.opened ? "1" : "0"};
   transition:0.5s ease-in-out;
   color: #F9F7F7;
@@ -40,15 +57,19 @@ const ListItem = styled.li`
   width: 100px;
   list-style: none;
   margin-bottom: 0.8em;
+  
   cursor: pointer;
   :hover{
     background-color:red;
   }
 `;
 
-const NavigationBar = () => {
+const NavigationBar = (props: Iprops) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const onClickMenu = (num: number) => {
+    props.setSelectedData(num);
+  }
   return (
     <>
     <MenuButtonContainer>
@@ -57,9 +78,9 @@ const NavigationBar = () => {
     </MenuButtonContainer>
     <NavigationContainer opened={isOpen}>
       <NaviMenuList opened={isOpen}>
-        <ListItem>Mango</ListItem>
-        <ListItem>Apple</ListItem>
-        <ListItem>Oranges</ListItem>
+        {props.timeData.map((v)=>{
+          return <ListItem onClick={() => onClickMenu(v.id)} key={v.id}>{v.title}</ListItem>
+        })}
       </NaviMenuList>
     </NavigationContainer>
     </>

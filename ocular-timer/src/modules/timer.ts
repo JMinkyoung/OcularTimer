@@ -31,16 +31,22 @@ type TimerData = {
 
 const initialState: TimerData[] = [
   {
-    id: 1,
+    id: 0,
     title: "뽀모도로 🍅",
     time: [{"subtitle" : "공부", "time": 1500}, {"subtitle" : "휴식", "time": 300}],
     color: "#22577E"
   },
   {
-    id: 2,
+    id: 1,
     title: "라면 🍜",
     time: [{"subtitle" : "", "time": 180}],
-    color: "#22577E"
+    color: "#6998AB"
+  },
+  {
+    id: 2,
+    title: "RC 📝",
+    time: [{"subtitle" : "", "time": 4500}],
+    color: "#406882"
   }
 ];
 

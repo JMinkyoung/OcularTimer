@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import React from 'react';
+import React, {useState} from 'react';
 import TimerClock from '../components/TimerClock';
 import NavigationBar from '../components/NavigationBar';
 
@@ -52,16 +52,17 @@ type TimerProps = {
 
 const timer: NextPage = () => {
   const timerData: TimerProps[] = useSelector((state: RootState) => state.timer);
+  const [selectedData, setSelectedData] = useState(0);
   return (
     <PageWrapper>
     {/* 여기서 redux를 통해서 저장된 타이머 정보를 가져올 예정 */}
-    <NavigationBar/>
+    <NavigationBar timeData={timerData} setSelectedData={setSelectedData}/>
       <ClockComponentWrapper>
-        <TimerTitle>{timerData[1].title}</TimerTitle>
+        <TimerTitle>{timerData[selectedData].title}</TimerTitle>
         {/* <TimerTitle>
           <TimerDropDown timeData={timerData} currentTitle={timerData[1].title} />
         </TimerTitle> */}
-        <TimerClock timeData={timerData[1]}/>
+        <TimerClock timeData={timerData[selectedData]}/>
       </ClockComponentWrapper>
 
       <AudioPlayer autoPlay={false} loop src="/Book Bag.mp3" layout='horizontal' showJumpControls={false} style={{width: '400px'}} customProgressBarSection={
