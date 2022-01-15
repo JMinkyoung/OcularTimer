@@ -106,14 +106,14 @@ const ButtonWrapper = styled.div`
 `;
 
 const TimerClock = (props: Iprops) => {
-  const [time, setTime] = useState(0);
-  const [timeIdx, setTimeIdx] = useState(0);
-  const [done, setDone] = useState(false);
-  const [pause, setPause] = useState(false);
-  const [started, setStarted] = useState(false);
-  const [radius, setRadius] = useState(350);
-  const [circumference, setCircumference] = useState(2199);
-  const [className, setClassName] = useState("inner_circle pc");
+  const [time, setTime] = useState(0);  // 현재 시간
+  const [timeIdx, setTimeIdx] = useState(0);  // 시간 타입이 여러개일 경우 사용
+  const [done, setDone] = useState(false);  // 끝났는지 확인
+  const [pause, setPause] = useState(false);  // 일시정지
+  const [started, setStarted] = useState(false);  // 시작했는지 확인
+  const [radius, setRadius] = useState(350);  // 반지름
+  const [circumference, setCircumference] = useState(2199); // 원주
+  const [className, setClassName] = useState("inner_circle pc");  // 반응형 웹 클래스 name
 
   let target: number = props.timeData.time[timeIdx]["time"];
   const timeLen: number = props.timeData.time.length;
@@ -121,7 +121,17 @@ const TimerClock = (props: Iprops) => {
   const isMobile = useMediaQuery({
     query: "(max-width:767px)"
   });
+  
+  // 메뉴 바뀔때마다 실행 (전부 초기화)
+  useEffect(()=>{
+    setTime(0);
+    setTimeIdx(0);
+    setDone(false);
+    setPause(false);
+    setStarted(false);
+  },[props.timeData]);
 
+  // 반응형 웹
   useEffect(()=>{
     if(isMobile){
       setRadius(175);
@@ -135,6 +145,7 @@ const TimerClock = (props: Iprops) => {
     }
   },[isMobile]);
   
+  // 리렌더링 될 때 마다 실행 
   useEffect(()=>{
     const interval = setInterval(()=> {
       if(!pause && started){
@@ -142,13 +153,13 @@ const TimerClock = (props: Iprops) => {
       }
     }, 1000);
 
-    if(time === target && timeIdx !== timeLen-1){
+    if(time === target && timeIdx !== timeLen-1){ // 다음 타입이 있고 끝났을 때
       clearInterval(interval);
       setDone(true);
       setTime(0);
       setStarted(false);
       setTimeIdx(prevIndex => prevIndex+1);
-    }else if(time === target && timeIdx === timeLen-1){
+    }else if(time === target && timeIdx === timeLen-1){ // 다음 타입이 없고 끝났을 때
       clearInterval(interval);
       setDone(true);
       setTime(0);
@@ -177,6 +188,7 @@ const TimerClock = (props: Iprops) => {
       setPause(true);
     }
   }
+
   return (
     <>
         <ClockWrapper>

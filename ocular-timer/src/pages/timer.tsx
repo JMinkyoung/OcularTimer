@@ -55,13 +55,9 @@ const timer: NextPage = () => {
   const [selectedData, setSelectedData] = useState(0);
   return (
     <PageWrapper>
-    {/* 여기서 redux를 통해서 저장된 타이머 정보를 가져올 예정 */}
     <NavigationBar timeData={timerData} setSelectedData={setSelectedData}/>
       <ClockComponentWrapper>
         <TimerTitle>{timerData[selectedData].title}</TimerTitle>
-        {/* <TimerTitle>
-          <TimerDropDown timeData={timerData} currentTitle={timerData[1].title} />
-        </TimerTitle> */}
         <TimerClock timeData={timerData[selectedData]}/>
       </ClockComponentWrapper>
 
