@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { useMediaQuery } from "react-responsive";
-import { RiMenuFill, RiCloseFill } from "react-icons/ri";
+import { useRouter } from 'next/router';
+import { RiMenuFill, RiCloseFill, RiAddFill } from "react-icons/ri";
 import React, {SetStateAction, useState} from 'react';
 interface Navigation {
   opened: boolean;
@@ -28,7 +28,7 @@ const MenuButtonContainer = styled.div`
   top: 0;
   left: 0;
   z-index: 999;
-  height: 100px;
+  height: 50px;
 
 `;
 
@@ -46,7 +46,7 @@ const NavigationContainer = styled.div<Navigation>`
 
 const NaviMenuList = styled.ul<{opened: boolean}>`
   width: 150px;
-  padding: 100px 0px 0px 15px;
+  padding: 60px 0px 0px 15px;
   /* margin-left: 10px; */
   opacity: ${(props) => props.opened ? "1" : "0"};
   transition:0.5s ease-in-out;
@@ -54,26 +54,62 @@ const NaviMenuList = styled.ul<{opened: boolean}>`
 `;
 
 const ListItem = styled.li`
-  width: 100px;
+  clear:both;
+  float:left;
   list-style: none;
   margin-bottom: 0.8em;
-  
+  transition: all 0.5s ease-in-out;
   cursor: pointer;
+  :after{
+    display: block;
+    content: '';
+    border-bottom: solid 3px #3286E6;
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+  }
+
+  :hover:after{
+    transform: scaleX(1);
+  }
+`;
+
+const CloseButton = styled(RiCloseFill)`
+  padding: 10px 0 0 10px ;
+  font-size:  30px ;
+  color:  #F9F7F7 ;
+  cursor: pointer ;
+  transition: all 0.3s ease-in-out;
+
   :hover{
-    background-color:red;
+    color: #3286E6;
+  }
+`;
+
+const AddButton = styled(RiAddFill)`
+  width:30px;
+  font-size: 30px;
+  margin:10px 0 0 60px;
+  cursor: pointer;
+  color: #F9F7F7;
+  transition: all 0.3s ease-in-out;
+
+  :hover{
+    color: #3286E6;
   }
 `;
 
 const NavigationBar = (props: Iprops) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const router = useRouter();
   const onClickMenu = (num: number) => {
     props.setSelectedData(num);
-  }
+  };
   return (
     <>
     <MenuButtonContainer>
-      {isOpen ? <RiCloseFill onClick={toggle} style={{padding:"10px 0 0 10px",fontSize: "30px", color: "#F9F7F7", cursor: 'pointer'}}/> : 
+      {isOpen ? <><CloseButton onClick={toggle}/>
+                  <AddButton onClick={()=>router.push('/newtimer')}/> </> : 
                   <RiMenuFill onClick={toggle} style={{padding:"10px 0 0 10px",fontSize: "30px", color: "#3F72AF", cursor: 'pointer'}}/>}
     </MenuButtonContainer>
     <NavigationContainer opened={isOpen}>
