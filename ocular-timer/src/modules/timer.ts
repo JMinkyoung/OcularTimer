@@ -2,8 +2,9 @@ const CREATE = 'timer/CREATE' as const;
 const LOAD = 'timer/LOAD' as const;
 const DELETE = 'timer/DELETE' as const;
 
-export const create = () => ({
-  type: CREATE
+export const addTimer = (data: TimerData) => ({
+  type: CREATE,
+  data
 });
 
 export const load = () => ({
@@ -14,7 +15,7 @@ export const deleteTimer = () => ({
   type: DELETE,
 });
 
-type TimerAction = | ReturnType<typeof create> | ReturnType<typeof load> | ReturnType<typeof deleteTimer>;
+type TimerAction = | ReturnType<typeof addTimer> | ReturnType<typeof load> | ReturnType<typeof deleteTimer>;
 
 
 type TimeDataType = {
@@ -53,9 +54,7 @@ const initialState: TimerData[] = [
 const timer = (state: TimerData[] = initialState, action: TimerAction): TimerData[] => {
   switch (action.type) {
     case CREATE: 
-      return { 
-        ...state,
-      };
+      return [...state, action.data];
     // case LOAD:
     //   return { count: state.count - 1 };
     // case DELETE:
