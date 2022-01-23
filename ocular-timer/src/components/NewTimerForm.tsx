@@ -26,12 +26,53 @@ const NewTimerFormContainer = styled.form`
   align-items: center;
   justify-content:center;
   flex-direction: column;
-
+  border: 2px solid grey;
+  background-color: grey;
+  border-radius: 50%; 
+  @media ${(props) => props.theme.tablet} {
+    width: 700px;
+    height: 700px;
+  }
   @media ${(props) => props.theme.mobile} {
-    width: 400px;
-    height: 400px;
+    width: 380px;
+    height: 380px;
   }
 `;
+
+const InputContainer = styled.div`
+  display:flex;
+  flex-direction: column;
+  margin: 0px 0px 20px 0px;
+  width: 80px;
+`;
+
+const TitleInputContainer = styled.div`
+  width:250px;
+  @media ${(props) => props.theme.mobile} {
+    width: 200px;
+    height: 100px;
+  }
+`;
+
+const TimeInputContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 250px;
+  @media ${(props) => props.theme.mobile} {
+    width: 200px;
+    height: 100px;
+  }
+`;
+
+const ColorInputContainer = styled.div`
+  width: 250px;
+  @media ${(props) => props.theme.mobile} {
+    width: 150px;
+
+  }
+`;
+
+// https://brunch.co.kr/@ebprux/56
 const NewTimerForm = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newTime, setNewTime] = useState(0);
@@ -68,20 +109,31 @@ const NewTimerForm = () => {
   }
   return (
     <NewTimerFormContainer onSubmit={onSubmit}>
-        {/* <label>타이틀</label>
-        <input onChange={onChangeTitle} value={newTitle}/> */}
-        <label htmlFor="inp" className="inp">
-          <input type="text" id="inp" placeholder="&nbsp;"/>
-          <span className="label">타이틀</span>
-          <span className="focus-bg"></span>
-        </label>
-        <div style={{display:'flex', flexDirection:'row'}}>
-          <input onChange={onChangeHour} style={{width:'50px'}}/>시간
-          <input onChange={onChangeMin} style={{width:'50px'}}/>분
-          <input onChange={onChangeSec} style={{width:'50px'}}/>초
-        </div>
+      <TitleInputContainer>
+        <InputContainer style={{width:'100%'}}>
+          <label style={{marginBottom:'5px'}}>타이틀</label>
+          <input style={{width:'auto', height:'30px'}} onChange={onChangeTitle} value={newTitle}/>
+        </InputContainer>
+      </TitleInputContainer>
+      <TimeInputContainer>
+        <InputContainer>
+          <label style={{marginBottom:'5px'}}>시간</label>
+          <input onChange={onChangeHour} style={{height:'30px'}}/>
+        </InputContainer>
+        <InputContainer>
+          <label style={{marginBottom:'5px'}}>분</label>
+          <input onChange={onChangeMin} style={{height:'30px'}}/>
+        </InputContainer>
+        <InputContainer>
+          <label style={{marginBottom:'5px'}}>초</label>
+          <input onChange={onChangeSec} style={{height:'30px'}}/>          
+        </InputContainer>
+      </TimeInputContainer>
         {/* https://www.npmjs.com/package/react-colorful */}
-        <HexColorPicker color={color} onChange={setColor}/> 
+      <ColorInputContainer>
+        <HexColorPicker style={{width:'auto'}} color={color} onChange={setColor}/>
+      </ColorInputContainer>
+
         <div style={{display:'flex', flexDirection:'row'}}>
           <button onClick={onSubmit}>저장</button>
           <button>취소</button>

@@ -19,6 +19,7 @@ const newtimer: NextPage = () => {
 
   return (
     <PageWrapper>
+      <h1>New Timer Add</h1>
       <NewTimerForm />
     </PageWrapper>
   );
