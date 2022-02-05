@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import { RiMenuFill, RiCloseFill, RiAddFill } from "react-icons/ri";
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HexColorPicker } from "react-colorful";
@@ -19,15 +18,14 @@ type TimerProps = {
   color: string;
 }
 
-const NewTimerFormContainer = styled.form`
+const NewTimerFormContainer = styled.form<{color: string}>`
   width: 800px;
   height: 800px;
   display: flex;
   align-items: center;
   justify-content:center;
   flex-direction: column;
-  border: 2px solid grey;
-  background-color: grey;
+  background-color: ${(props)=>props.color};
   border-radius: 50%; 
   @media ${(props) => props.theme.tablet} {
     width: 700px;
@@ -72,6 +70,37 @@ const ColorInputContainer = styled.div`
   }
 `;
 
+const ButtonContainer = styled.div`
+  display:flex;
+  flex-direction:row;
+  width: 250px;
+  justify-content: center;
+  margin: 20px 0 0 0;
+`;
+
+const PrimaryButton = styled.button`
+  background-color: #3b88d5;
+  color: #ecf0f4;
+  width: 100px;
+  height: 40px;
+  margin: 0 10px 0 0;
+  
+  :hover{
+    box-shadow:-100px 0 0 0 rgba(0,0,0,0.5) inset;
+  }
+`;
+
+const CancelButton = styled.button`
+  background-color: #ecf0f4;
+  color: #3b88d5;
+  width: 100px;
+  height: 40px;
+
+  :hover{
+    box-shadow:-100px 0 0 0 rgba(0,0,0,0.5) inset;
+  }
+`;
+
 // https://brunch.co.kr/@ebprux/56
 const NewTimerForm = () => {
   const [newTitle, setNewTitle] = useState("");
@@ -108,7 +137,7 @@ const NewTimerForm = () => {
     router.push('/timer');
   }
   return (
-    <NewTimerFormContainer onSubmit={onSubmit}>
+    <NewTimerFormContainer onSubmit={onSubmit} color={color}>
       <TitleInputContainer>
         <InputContainer style={{width:'100%'}}>
           <label style={{marginBottom:'5px'}}>타이틀</label>
@@ -131,13 +160,15 @@ const NewTimerForm = () => {
       </TimeInputContainer>
         {/* https://www.npmjs.com/package/react-colorful */}
       <ColorInputContainer>
-        <HexColorPicker style={{width:'auto'}} color={color} onChange={setColor}/>
-      </ColorInputContainer>
-
-        <div style={{display:'flex', flexDirection:'row'}}>
-          <button onClick={onSubmit}>저장</button>
-          <button>취소</button>
+        <label>타이머 색상</label>
+        <div style={{marginTop:'5px'}}>
+          <HexColorPicker style={{width:'auto'}} color={color} onChange={setColor}/>
         </div>
+      </ColorInputContainer>
+        <ButtonContainer>
+          <PrimaryButton onClick={onSubmit}>저장</PrimaryButton>
+          <CancelButton onClick={() => router.push('/timer')}>취소</CancelButton>
+        </ButtonContainer>
     </NewTimerFormContainer>
   );
 };

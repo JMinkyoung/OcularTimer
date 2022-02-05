@@ -27,7 +27,11 @@ const ClockComponentWrapper = styled.div`
   justify-content:center;
   width: 100%;
   margin-top:20px;
-  height: auto;
+  height: 850px;
+
+  @media ${(props) => props.theme.mobile} {
+    height: 500px;
+  }
 `;
 
 const TimerTitle = styled.span`
@@ -36,6 +40,13 @@ const TimerTitle = styled.span`
   cursor: pointer;
 `;
 
+const AudioWrapper = styled.div`
+  width: 800px;
+
+  @media ${(props) => props.theme.mobile} {
+    width: 400px;
+  }
+`;
 
 type TimeDataType = {
   subtitle: string;
@@ -60,14 +71,16 @@ const timer: NextPage = () => {
         <TimerTitle>{timerData[selectedData].title}</TimerTitle>
         <TimerClock timeData={timerData[selectedData]}/>
       </ClockComponentWrapper>
-
-      <AudioPlayer autoPlay={false} loop src="/Book Bag.mp3" layout='horizontal' showJumpControls={false} style={{width: '400px'}} customProgressBarSection={
+      <AudioWrapper>
+      <AudioPlayer autoPlay={false} loop src="/Book Bag.mp3" layout='horizontal' showJumpControls={false} style={{width: '100%'}} customProgressBarSection={
     [
       RHAP_UI.CURRENT_TIME,
       RHAP_UI.PROGRESS_BAR,
       RHAP_UI.CURRENT_LEFT_TIME,
     ]
-  }/>
+}/>
+      </AudioWrapper>
+
     
     </PageWrapper>
   )

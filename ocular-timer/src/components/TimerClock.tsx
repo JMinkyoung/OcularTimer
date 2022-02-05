@@ -45,7 +45,7 @@ const ClockWrapper = styled.div`
 
 const ClockImgWrapper = styled.div`
   display: flex;
-  margin: auto;
+  /* margin: auto; */
   margin-top: 0;
   width: 800px;
   height: 800px;
@@ -104,7 +104,15 @@ const ButtonWrapper = styled.div`
   display: flex;
 `;
 
+const TimeInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px 0 5px 0;
+`;
+
 const TimerClock = (props: Iprops) => {
+  
   const [time, setTime] = useState(0);  // 현재 시간
   const [timeIdx, setTimeIdx] = useState(0);  // 시간 타입이 여러개일 경우 사용
   const [done, setDone] = useState(false);  // 끝났는지 확인
@@ -116,7 +124,8 @@ const TimerClock = (props: Iprops) => {
 
   let target: number = props.timeData.time[timeIdx]["time"];
   const timeLen: number = props.timeData.time.length;
-
+  const [min, setMin] = useState(Math.floor((target)/60));
+  const [sec, setSec] = useState(60);
   const isMobile = useMediaQuery({
     query: "(max-width:767px)"
   });
@@ -143,6 +152,16 @@ const TimerClock = (props: Iprops) => {
 
     }
   },[isMobile]);
+
+  useEffect(()=>{
+    if(min !== Math.floor((target-time)/60)){
+      setMin(Math.floor((target-time)/60));
+      setSec(60);
+    }else{
+      setSec(prevSec => prevSec-1);
+    }
+  },[time]);
+
   
   // 리렌더링 될 때 마다 실행 
   useEffect(()=>{
@@ -208,8 +227,14 @@ const TimerClock = (props: Iprops) => {
               />
             </ClockCircleWrapper>
           </ClockImgWrapper>
-          {target - time}초
-          {props.timeData.time[timeIdx].subtitle}
+          <TimeInfoWrapper>            
+            <span>{props.timeData.time[timeIdx].subtitle}</span>
+            <div style={{display:'flex', flexDirection:'row'}}>
+              <span>{Math.floor((target - time)/60/60)}시간</span>
+              <span>{started ? min : Math.floor((target-time)/60)}분</span>
+              <span>{started ? sec : Math.floor((target-time))}초</span>
+            </div>
+          </TimeInfoWrapper>
           <ButtonWrapper>
             <button onClick={onClickStart}>시작 버튼</button>
             <button onClick={onClickPause}>정지 버튼</button>
