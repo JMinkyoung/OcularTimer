@@ -14,7 +14,7 @@ type TimeDataType = {
 type TimerProps = {
   id: number;
   title: string;
-  time: TimeDataType[];
+  time: TimeDataType;
   color: string;
 }
 
@@ -131,7 +131,7 @@ const NewTimerForm = () => {
     dispatch(addTimer({
       id:timerData.length,
       title: newTitle,
-      time: [{"subtitle" : "", "time": newTime}],
+      time: {"subtitle" : "", "time": newTime},
       color: color
     }));
     router.push('/timer');
