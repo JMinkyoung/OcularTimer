@@ -105,8 +105,9 @@ const ButtonWrapper = styled.div`
   display: flex;
 `;
 
-const TimeInfoWrapper = styled.div`
+const TimeInfoWrapper = styled.div<{started: boolean}>`
   display: flex;
+  visibility:  ${(props)=> props.started ? 'hidden' : 'visible'};
   flex-direction: column;
   align-items: center;
   margin: 5px 0 5px 0;
@@ -123,8 +124,6 @@ const TimerClock = (props: Iprops) => {
   let target: number = props.timeData.time["time"];
   const [time, setTime] = useState(target);  // 현재 시간
 
-  const [min, setMin] = useState(Math.floor((target)/60));
-  const [sec, setSec] = useState(60);
   const isMobile = useMediaQuery({
     query: "(max-width:767px)"
   });
@@ -132,8 +131,6 @@ const TimerClock = (props: Iprops) => {
   // 메뉴 바뀔때마다 실행 (전부 초기화)
   useEffect(()=>{
     setTime(props.timeData.time["time"]);
-    setMin(Math.floor((target-time)/60));
-    setSec(60);
     setDone(false);
     setPause(false);
     setStarted(false);
@@ -153,19 +150,8 @@ const TimerClock = (props: Iprops) => {
     }
   },[isMobile]);
 
-  useEffect(()=>{
-    if(min !== Math.floor((target-time)/60)){
-      setMin(Math.floor((target-time)/60));
-      setSec(60);
-    }else{
-      setSec(prevSec => prevSec-1);
-    }
-  },[time]);
-
-  
   // 리렌더링 될 때 마다 실행 
   useEffect(()=>{
-    console.log(time, started);
     const interval = setInterval(()=> {
       if(!pause && started){
         setTime(prevTime => prevTime-1);
@@ -221,16 +207,19 @@ const TimerClock = (props: Iprops) => {
               />
             </ClockCircleWrapper>
           </ClockImgWrapper>
-          <TimeInfoWrapper>            
-            <div style={{display:'flex', flexDirection:'row'}}>
-              <span>{Math.floor((time)/60/60)}시간</span>
-              <span>{Math.floor((time)/60)}분</span>
-              <span>{started ? sec : time-(60*Math.floor(time/60))}초</span>
+          <TimeInfoWrapper started={started}>            
+            <div style={{display:'flex', flexDirection:'row'}}>              
+              {Math.floor((target)/60/60) === 0 ? null : <span>{Math.floor((target)/60/60)}시간</span>}
+              {target - Math.floor((target)/60/60)*60*60 === 0 ? null : <span>{Math.floor((target - Math.floor((target)/60/60)*60*60)/60)}분</span>}
+              {target - Math.floor((target)/60/60)*60*60 - Math.floor((target - Math.floor((target)/60/60)*60*60)/60)*60 === 0 ? null : 
+              <span>
+                {target - (Math.floor((target)/60/60)*60*60)-(Math.floor((target - Math.floor((target)/60/60)*60*60)/60)*60)}초
+              </span>}
             </div>
           </TimeInfoWrapper>
           <ButtonWrapper>
-            <button onClick={onClickStart}>시작 버튼</button>
-            <button onClick={onClickPause}>정지 버튼</button>
+            <button onClick={onClickStart}>START</button>
+            <button onClick={onClickPause}>STOP</button>
           </ButtonWrapper>
         </ClockWrapper>
     </>
