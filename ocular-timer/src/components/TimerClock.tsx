@@ -113,6 +113,13 @@ const TimeInfoWrapper = styled.div<{started: boolean}>`
   margin: 5px 0 5px 0;
 `;
 
+const ControlButton = styled.button<{color: string}>`
+  margin-left: 10px;
+  padding: 3px;
+  background-color: ${(props)=>props.color};
+  color: #ffff;
+`
+
 const TimerClock = (props: Iprops) => {
   
   const [done, setDone] = useState(false);  // 끝났는지 확인
@@ -123,7 +130,6 @@ const TimerClock = (props: Iprops) => {
   const [className, setClassName] = useState("inner_circle pc");  // 반응형 웹 클래스 name
   let target: number = props.timeData.time["time"];
   const [time, setTime] = useState(target);  // 현재 시간
-
   const isMobile = useMediaQuery({
     query: "(max-width:767px)"
   });
@@ -218,8 +224,8 @@ const TimerClock = (props: Iprops) => {
             </div>
           </TimeInfoWrapper>
           <ButtonWrapper>
-            <button onClick={onClickStart}>START</button>
-            <button onClick={onClickPause}>STOP</button>
+            <ControlButton color={props.timeData.color} onClick={onClickStart}>{started || pause ? "RESUME" : "START"}</ControlButton>
+            <ControlButton color={props.timeData.color} onClick={onClickPause}>PAUSE</ControlButton>
           </ButtonWrapper>
         </ClockWrapper>
     </>
