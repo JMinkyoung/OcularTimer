@@ -14,7 +14,7 @@ type TimeDataType = {
 type TimerData = {
   id: number;
   title: string;
-  time: TimeDataType[];
+  time: TimeDataType;
   color: string;
 }
 

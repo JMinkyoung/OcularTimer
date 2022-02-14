@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import React, {useState} from 'react';
 import TimerClock from '../components/TimerClock';
 import NavigationBar from '../components/NavigationBar';
+import TimerMenu from '../components/TimerMenu';
 
 import AudioPlayer,{ RHAP_UI }  from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css'; 
@@ -34,8 +35,10 @@ const ClockComponentWrapper = styled.div`
   }
 `;
 
-const TimerTitle = styled.span`
-  margin-bottom: 20px;
+const TimerTitle = styled.div`
+  display: flex;
+  margin-bottom: 5px;
+  flex-direction: row;
   font-size: 2rem;
   cursor: pointer;
 `;
@@ -56,19 +59,27 @@ type TimeDataType = {
 type TimerProps = {
   id: number;
   title: string;
-  time: TimeDataType[];
+  time: TimeDataType;
   color: string;
 }
 
 
 const timer: NextPage = () => {
   const timerData: TimerProps[] = useSelector((state: RootState) => state.timer);
+  const [titleClicked, setTitleClicked] = useState(false);
   const [selectedData, setSelectedData] = useState(0);
+
+  const titleOnclick = () => {
+    setTitleClicked(!titleClicked);
+  }
   return (
     <PageWrapper>
     <NavigationBar timeData={timerData} setSelectedData={setSelectedData}/>
       <ClockComponentWrapper>
-        <TimerTitle>{timerData[selectedData].title}</TimerTitle>
+        <TimerTitle onClick={titleOnclick}>{timerData[selectedData].title}
+        {titleClicked ? <TimerMenu/> : null}
+        </TimerTitle>
+        
         <TimerClock timeData={timerData[selectedData]}/>
       </ClockComponentWrapper>
       <AudioWrapper>

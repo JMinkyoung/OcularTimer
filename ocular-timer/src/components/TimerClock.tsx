@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from "react-responsive";
+import { IoMdPlay,IoMdPause } from 'react-icons/io';
 
 interface ClockCircleSvg {
   time: number;
@@ -113,12 +114,6 @@ const TimeInfoWrapper = styled.div<{started: boolean}>`
   margin: 5px 0 5px 0;
 `;
 
-const ControlButton = styled.button<{color: string}>`
-  margin-left: 10px;
-  padding: 3px;
-  background-color: ${(props)=>props.color};
-  color: #ffff;
-`
 
 const TimerClock = (props: Iprops) => {
   
@@ -173,16 +168,6 @@ const TimerClock = (props: Iprops) => {
     return () => clearInterval(interval);
   });
 
-  const onClickStart = () => {
-    setPause(false);
-    setStarted(true);
-    setDone(false);
-  }
-
-  const onClickPause = () => {
-    setPause(true);
-  }
-
   const onClickTimer = () => {
     if(pause || !started){
       setPause(false);
@@ -224,8 +209,9 @@ const TimerClock = (props: Iprops) => {
             </div>
           </TimeInfoWrapper>
           <ButtonWrapper>
-            <ControlButton color={props.timeData.color} onClick={onClickStart}>{started || pause ? "RESUME" : "START"}</ControlButton>
-            <ControlButton color={props.timeData.color} onClick={onClickPause}>PAUSE</ControlButton>
+            <div onClick={onClickTimer}>{pause || !started ? 
+            <IoMdPlay style={{fontSize:"2rem", cursor:"pointer"}} color={props.timeData.color}/> : 
+            <IoMdPause style={{fontSize:"2rem", cursor:"pointer"}} color={props.timeData.color}/>}</div>
           </ButtonWrapper>
         </ClockWrapper>
     </>
