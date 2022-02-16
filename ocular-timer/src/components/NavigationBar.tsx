@@ -6,15 +6,10 @@ interface Navigation {
   opened: boolean;
 }
 
-type TimeDataType = {
-  subtitle: string;
-  time: number;
-}
-
 type TimerData = {
   id: number;
   title: string;
-  time: TimeDataType;
+  time: number;
   color: string;
 }
 

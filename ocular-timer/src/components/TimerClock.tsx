@@ -16,14 +16,9 @@ interface ClockCircle {
   pause: boolean;
 }
 
-type TimeDataType = {
-  subtitle: string;
-  time: number;
-}
-
 type TimerData = {
   title: string;
-  time: TimeDataType;
+  time: number;
   color: string;
 }
 
@@ -75,32 +70,32 @@ const ClockCircleWrapper = styled.svg<ClockCircleSvg>`
   }
 `;
 
-const ClockCircle = styled.circle<ClockCircle>`
-  fill: none; 
-  stroke: #ffff;
-  cx: 350;
-  cy: 350;
-  r: 350;
-  stroke-width: 700;
-  stroke-dasharray: ${(props)=>props.circumference};
-  animation: ${(props)=> (!props.done && props.time===props.targetTime) ? null : `dash ${props.targetTime}s linear infinite`};
-  visibility: ${(props)=> props.done || props.time===props.targetTime ? 'hidden' : 'visible'};
-  animation-play-state: ${(props)=> props.pause ? "paused" : "running"};
-  @keyframes dash {
-    from{
-      stroke-dashoffset: 2200;
-    }
-    to {
-      stroke-dashoffset:0;
-    }
-  }
-  @media ${(props) => props.theme.mobile} {
-    cx: 175;
-    cy: 175;
-    r: 175;
-    stroke-width: 350;
-  }
-`;
+// const ClockCircle = styled.circle<ClockCircle>`
+//   fill: none; 
+//   stroke: #ffff;
+//   cx: 350;
+//   cy: 350;
+//   r: 350;
+//   stroke-width: 700;
+//   stroke-dasharray: ${(props)=>props.circumference};
+//   animation: ${(props)=> (!props.done && props.time===props.targetTime) ? null : `dash ${props.targetTime}s linear infinite`};
+//   visibility: ${(props)=> props.done || props.time===props.targetTime ? 'hidden' : 'visible'};
+//   animation-play-state: ${(props)=> props.pause ? "paused" : "running"};
+//   @keyframes dash {
+//     from{
+//       stroke-dashoffset: 2200;
+//     }
+//     to {
+//       stroke-dashoffset:0;
+//     }
+//   }
+//   @media ${(props) => props.theme.mobile} {
+//     cx: 175;
+//     cy: 175;
+//     r: 175;
+//     stroke-width: 350;
+//   }
+// `;
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -118,12 +113,13 @@ const TimeInfoWrapper = styled.div<{started: boolean}>`
 const TimerClock = (props: Iprops) => {
   
   const [done, setDone] = useState(false);  // 끝났는지 확인
+  const [test, setTest] = useState("running");
   const [pause, setPause] = useState(false);  // 일시정지
   const [started, setStarted] = useState(false);  // 시작했는지 확인
   const [radius, setRadius] = useState(350);  // 반지름
   const [circumference, setCircumference] = useState(2199); // 원주
   const [className, setClassName] = useState("inner_circle pc");  // 반응형 웹 클래스 name
-  let target: number = props.timeData.time["time"];
+  const target: number = props.timeData.time;
   const [time, setTime] = useState(target);  // 현재 시간
   const isMobile = useMediaQuery({
     query: "(max-width:767px)"
@@ -131,7 +127,7 @@ const TimerClock = (props: Iprops) => {
   
   // 메뉴 바뀔때마다 실행 (전부 초기화)
   useEffect(()=>{
-    setTime(props.timeData.time["time"]);
+    setTime(props.timeData.time);
     setDone(false);
     setPause(false);
     setStarted(false);
@@ -147,7 +143,6 @@ const TimerClock = (props: Iprops) => {
       setRadius(350);
       setCircumference(2199);
       setClassName("inner_circle pc");
-
     }
   },[isMobile]);
 
@@ -162,7 +157,7 @@ const TimerClock = (props: Iprops) => {
     if(time === 0){ // 다음 타입이 없고 끝났을 때
       clearInterval(interval);
       setDone(true);
-      setTime(0);
+      setTime(props.timeData.time);
       setStarted(false);
     }
     return () => clearInterval(interval);
@@ -178,6 +173,14 @@ const TimerClock = (props: Iprops) => {
     }
   }
 
+  useEffect(()=>{
+    if(pause){
+      setTest("paused");
+    }else{
+      setTest("running");
+    }
+  },[pause]);
+  
   return (
     <>
         <ClockWrapper>
@@ -192,9 +195,9 @@ const TimerClock = (props: Iprops) => {
               r= {radius}
               strokeWidth={radius*2}
               strokeDasharray={circumference}
-              style={{animation: !done && time===target ? "null" : `dash ${target}s linear infinite`,
+              style={{animation: !done && time===target ? "none" : `dash ${target}s linear infinite ${test}`,
                       visibility: done || time===target ? 'hidden' : 'visible',
-                      animationPlayState: pause ? "paused" : "running"}}
+                      }}
               />
             </ClockCircleWrapper>
           </ClockImgWrapper>

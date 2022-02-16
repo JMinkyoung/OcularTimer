@@ -1,17 +1,14 @@
 import type { NextPage } from 'next'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TimerClock from '../components/TimerClock';
 import NavigationBar from '../components/NavigationBar';
 import TimerMenu from '../components/TimerMenu';
 
-import AudioPlayer,{ RHAP_UI }  from 'react-h5-audio-player';
-import 'react-h5-audio-player/lib/styles.css'; 
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../modules';
 
 const PageWrapper = styled.div`
-  /* background-color: #121212; */
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -38,28 +35,22 @@ const ClockComponentWrapper = styled.div`
 const TimerTitle = styled.div`
   display: flex;
   margin-bottom: 5px;
+  padding-left: 100px;
   flex-direction: row;
   font-size: 2rem;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-`;
-
-const AudioWrapper = styled.div`
-  width: 800px;
 
   @media ${(props) => props.theme.mobile} {
-    width: 400px;
+    margin-bottom: 20px;
   }
 `;
-
-type TimeDataType = {
-  subtitle: string;
-  time: number;
-}
 
 type TimerProps = {
   id: number;
   title: string;
-  time: TimeDataType;
+  time: number;
   color: string;
 }
 
@@ -67,32 +58,25 @@ type TimerProps = {
 const timer: NextPage = () => {
   const timerData: TimerProps[] = useSelector((state: RootState) => state.timer);
   const [titleClicked, setTitleClicked] = useState(false);
-  const [selectedData, setSelectedData] = useState(0);
-
+  const [selectedData, setSelectedData] = useState(timerData[0].id);
+  const [currentData, setCurrentData] = useState(timerData[0]);
   const titleOnclick = () => {
     setTitleClicked(!titleClicked);
   }
+  useEffect(()=>{
+    setCurrentData(timerData.filter((v)=>v.id === selectedData)[0]);
+  },[selectedData]);
+
   return (
     <PageWrapper>
     <NavigationBar timeData={timerData} setSelectedData={setSelectedData}/>
       <ClockComponentWrapper>
-        <TimerTitle onClick={titleOnclick}>{timerData[selectedData].title}
-        {titleClicked ? <TimerMenu/> : null}
+        <TimerTitle onClick={titleOnclick}>{currentData.title}
+        <TimerMenu id={currentData.id} titleClicked={titleClicked}/>
         </TimerTitle>
-        
-        <TimerClock timeData={timerData[selectedData]}/>
+        <TimerClock timeData={currentData}/>
       </ClockComponentWrapper>
-      <AudioWrapper>
-      <AudioPlayer autoPlay={false} loop src="/Book Bag.mp3" layout='horizontal' showJumpControls={false} style={{width: '100%'}} customProgressBarSection={
-    [
-      RHAP_UI.CURRENT_TIME,
-      RHAP_UI.PROGRESS_BAR,
-      RHAP_UI.CURRENT_LEFT_TIME,
-    ]
-}/>
-      </AudioWrapper>
 
-    
     </PageWrapper>
   )
 }

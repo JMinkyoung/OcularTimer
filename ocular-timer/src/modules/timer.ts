@@ -11,22 +11,18 @@ export const load = () => ({
   type: LOAD
 });
 
-export const deleteTimer = () => ({
+export const deleteTimer = (data: number) => ({
   type: DELETE,
+  data
 });
 
 type TimerAction = | ReturnType<typeof addTimer> | ReturnType<typeof load> | ReturnType<typeof deleteTimer>;
 
 
-type TimeDataType = {
-  subtitle: string;
-  time: number;
-}
-
 type TimerData = {
   id: number;
   title: string;
-  time: TimeDataType;
+  time: number;
   color: string;
 }
 
@@ -34,19 +30,19 @@ const initialState: TimerData[] = [
   {
     id: 0,
     title: "뽀모도로 🍅",
-    time: {"subtitle" : "공부", "time": 1500}, 
+    time: 1500, 
     color: "#22577E"
   },
   {
     id: 1,
     title: "라면 🍜",
-    time: {"subtitle" : "", "time": 180},
+    time: 180,
     color: "#6998AB"
   },
   {
     id: 2,
     title: "RC 📝",
-    time: {"subtitle" : "", "time": 4500},
+    time: 4500,
     color: "#406882"
   }
 ];
@@ -57,8 +53,8 @@ const timer = (state: TimerData[] = initialState, action: TimerAction): TimerDat
       return [...state, action.data];
     // case LOAD:
     //   return { count: state.count - 1 };
-    // case DELETE:
-    //   return { count: state.count + action.payload };
+    case DELETE:
+      return state.filter((timer) => timer.id !== action.data);
     default:
       return state;
   }

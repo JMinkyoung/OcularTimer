@@ -6,15 +6,10 @@ import { HexColorPicker } from "react-colorful";
 import { addTimer } from '../modules/timer';
 import { RootState } from '../modules';
 
-type TimeDataType = {
-  subtitle: string;
-  time: number;
-}
-
 type TimerProps = {
   id: number;
   title: string;
-  time: TimeDataType;
+  time: number;
   color: string;
 }
 
@@ -104,7 +99,9 @@ const CancelButton = styled.button`
 // https://brunch.co.kr/@ebprux/56
 const NewTimerForm = () => {
   const [newTitle, setNewTitle] = useState("");
-  const [newTime, setNewTime] = useState(0);
+  const [newHour, setNewHour] = useState(0);
+  const [newMin, setNewMin] = useState(0);
+  const [newSec, setNewSec] = useState(0);
   const [color, setColor] = useState("#aabbcc");
 
   const dispatch = useDispatch();
@@ -116,22 +113,22 @@ const NewTimerForm = () => {
   };
 
   const onChangeHour = (e: any) => {
-    setNewTime(newTime + (e.target.value*3600));
+    setNewHour(e.target.value*3600);
   }
 
   const onChangeMin = (e: any) => {
-    setNewTime(newTime + (e.target.value*60));
+    setNewMin(e.target.value*60);
   }
 
   const onChangeSec = (e: any) => {
-    setNewTime(newTime+ (e.target.value*1));
+    setNewSec(e.target.value*1);
   }
 
   const onSubmit = () => {
     dispatch(addTimer({
-      id:timerData.length,
+      id:timerData[timerData.length-1].id+1,
       title: newTitle,
-      time: {"subtitle" : "", "time": newTime},
+      time: newHour+newMin+newSec,
       color: color
     }));
     router.push('/timer');
