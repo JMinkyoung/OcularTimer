@@ -7,20 +7,25 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from '../modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 
 const store = createStore(rootReducer,composeWithDevTools());
+const persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return(
     <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <Head>
-        <meta charSet="utf-8" />
-        <title>OPT</title>
-      </Head>
-      <Component {...pageProps} />
-    </ThemeProvider>
+      <PersistGate loading={null} persistor={persistor}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Head>
+          <meta charSet="utf-8" />
+          <title>OPT</title>
+        </Head>
+        <Component {...pageProps} />
+      </ThemeProvider>
+      </PersistGate>
     </Provider>
   )
 }
