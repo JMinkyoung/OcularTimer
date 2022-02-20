@@ -126,7 +126,7 @@ const NewTimerForm = () => {
 
   const onSubmit = () => {
     dispatch(addTimer({
-      id:timerData[timerData.length-1].id+1,
+      id: timerData.length === 0 ? 0 : timerData[timerData.length-1].id+1,
       title: newTitle,
       time: newHour+newMin+newSec,
       color: color

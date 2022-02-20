@@ -58,8 +58,9 @@ type TimerProps = {
 const timer: NextPage = () => {
   const timerData: TimerProps[] = useSelector((state: RootState) => state.timer);
   const [titleClicked, setTitleClicked] = useState(false);
-  const [selectedData, setSelectedData] = useState(timerData[0].id);
-  const [currentData, setCurrentData] = useState(timerData[0]);
+  const [selectedData, setSelectedData] = useState(timerData.length !== 0 ? timerData[0].id : 0);  // 타이머가 없을 때 에러 발생
+  const [currentData, setCurrentData] = useState(timerData[0] || null);
+
   const titleOnclick = () => {
     setTitleClicked(!titleClicked);
   }
@@ -67,16 +68,23 @@ const timer: NextPage = () => {
     setCurrentData(timerData.filter((v)=>v.id === selectedData)[0]);
   },[selectedData]);
 
+  useEffect(()=>{
+    if(timerData.length !==0){
+      setTitleClicked(false);
+      setSelectedData(timerData[0].id);
+      setCurrentData(timerData[0]);
+    }
+  },[timerData]);
   return (
     <PageWrapper>
     <NavigationBar timeData={timerData} setSelectedData={setSelectedData}/>
-      <ClockComponentWrapper>
-        <TimerTitle onClick={titleOnclick}>{currentData.title}
-        <TimerMenu id={currentData.id} titleClicked={titleClicked}/>
-        </TimerTitle>
-        <TimerClock timeData={currentData}/>
-      </ClockComponentWrapper>
-
+    {timerData.length === 0 ? null :
+          <ClockComponentWrapper>
+          <TimerTitle onClick={titleOnclick}>{currentData.title}
+          <TimerMenu id={currentData.id} titleClicked={titleClicked}/>
+          </TimerTitle>
+          <TimerClock timeData={currentData}/>
+        </ClockComponentWrapper>}
     </PageWrapper>
   )
 }
