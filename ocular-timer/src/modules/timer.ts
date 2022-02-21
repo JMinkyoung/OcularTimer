@@ -1,6 +1,7 @@
 const CREATE = 'timer/CREATE' as const;
 const LOAD = 'timer/LOAD' as const;
 const DELETE = 'timer/DELETE' as const;
+const EDIT = 'timer/EDIT' as const;
 
 export const addTimer = (data: TimerData) => ({
   type: CREATE,
@@ -15,6 +16,11 @@ export const deleteTimer = (data: number) => ({
   type: DELETE,
   data
 });
+
+export const editTimer = (data: TimerData) => ({
+  type: EDIT,
+  data
+})
 
 type TimerAction = | ReturnType<typeof addTimer> | ReturnType<typeof load> | ReturnType<typeof deleteTimer>;
 
@@ -51,10 +57,10 @@ const timer = (state: TimerData[] = initialState, action: TimerAction): TimerDat
   switch (action.type) {
     case CREATE: 
       return [...state, action.data];
-    // case LOAD:
-    //   return { count: state.count - 1 };
     case DELETE:
       return state.filter((timer) => timer.id !== action.data);
+    // case EDIT:
+    //   return 
     default:
       return state;
   }

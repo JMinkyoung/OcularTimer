@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <GlobalStyle />
         <Head>
           <meta charSet="utf-8" />
-          <title>OPT</title>
+          <title>OCT</title>
         </Head>
         <Component {...pageProps} />
       </ThemeProvider>

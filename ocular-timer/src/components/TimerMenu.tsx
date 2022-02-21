@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import React, {useState} from 'react';
 import { BiTrash,BiEdit } from 'react-icons/bi';
 import {deleteTimer} from '../modules/timer';
+import Router from 'next/router';
 
 interface Iprops {
   id: number;
@@ -22,9 +23,17 @@ const TimerMenu = (props: Iprops) => {
   const onClickdeleteTimer = () => {
     dispatch(deleteTimer(props.id));
   };
+
+  const onClickeditTimer = () => {
+    Router.push({
+      pathname: '/edittimer',
+      query: {id:props.id}
+    });
+  };
+
   return(
     <ButtonContainer shown={props.titleClicked}>
-      <BiEdit style={{marginRight: '9px', fontSize: '2rem'}}/>
+      <BiEdit onClick={onClickeditTimer} style={{marginRight: '9px', fontSize: '2rem'}}/>
       <BiTrash onClick={onClickdeleteTimer} style={{marginRight: '9px', fontSize: '2rem'}} color="red"/>
     </ButtonContainer>
   )

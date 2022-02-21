@@ -15,13 +15,13 @@ const PageWrapper = styled.div`
   width: 100%;
   height: 100%;
 `;
-const newtimer: NextPage = () => {
-
+const edittimer: NextPage = () => {
+  const router = useRouter();
   return (
     <PageWrapper>
-      <TimerForm type="add"/>
+      <TimerForm type="edit" dataId={Number(router.query.id)}/>
     </PageWrapper>
   );
 }
 
-export default newtimer;
+export default edittimer;
