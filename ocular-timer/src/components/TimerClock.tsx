@@ -7,18 +7,11 @@ interface ClockCircleSvg {
   time: number;
   targetTime: number;
 }
-
-interface ClockCircle {
-  time: number;
-  targetTime: number;
-  done: boolean;
-  circumference: number;
-  pause: boolean;
-}
-
 type TimerData = {
+  id: number;
   title: string;
   time: number;
+  timesplit: number[];
   color: string;
 }
 
@@ -69,33 +62,6 @@ const ClockCircleWrapper = styled.svg<ClockCircleSvg>`
     height: 350px;
   }
 `;
-
-// const ClockCircle = styled.circle<ClockCircle>`
-//   fill: none; 
-//   stroke: #ffff;
-//   cx: 350;
-//   cy: 350;
-//   r: 350;
-//   stroke-width: 700;
-//   stroke-dasharray: ${(props)=>props.circumference};
-//   animation: ${(props)=> (!props.done && props.time===props.targetTime) ? null : `dash ${props.targetTime}s linear infinite`};
-//   visibility: ${(props)=> props.done || props.time===props.targetTime ? 'hidden' : 'visible'};
-//   animation-play-state: ${(props)=> props.pause ? "paused" : "running"};
-//   @keyframes dash {
-//     from{
-//       stroke-dashoffset: 2200;
-//     }
-//     to {
-//       stroke-dashoffset:0;
-//     }
-//   }
-//   @media ${(props) => props.theme.mobile} {
-//     cx: 175;
-//     cy: 175;
-//     r: 175;
-//     stroke-width: 350;
-//   }
-// `;
 
 const ButtonWrapper = styled.div`
   display: flex;
