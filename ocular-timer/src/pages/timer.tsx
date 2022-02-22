@@ -51,6 +51,7 @@ type TimerProps = {
   id: number;
   title: string;
   time: number;
+  timesplit: number[];
   color: string;
 }
 

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HexColorPicker } from "react-colorful";
-import { addTimer } from '../modules/timer';
+import { addTimer, editTimer } from '../modules/timer';
 import { RootState } from '../modules';
 
 interface Iprops {
@@ -15,6 +15,7 @@ type TimerProps = {
   id: number;
   title: string;
   time: number;
+  timesplit: number[];
   color: string;
 }
 
@@ -66,7 +67,6 @@ const ColorInputContainer = styled.div`
   width: 250px;
   @media ${(props) => props.theme.mobile} {
     width: 150px;
-
   }
 `;
 
@@ -76,6 +76,11 @@ const ButtonContainer = styled.div`
   width: 250px;
   justify-content: center;
   margin: 20px 0 0 0;
+
+  @media ${(props) => props.theme.mobile} {
+    margin: 0 0 0 0;
+
+  }
 `;
 
 const PrimaryButton = styled.button`
@@ -84,7 +89,6 @@ const PrimaryButton = styled.button`
   width: 100px;
   height: 40px;
   margin: 0 10px 0 0;
-  
   :hover{
     box-shadow:-100px 0 0 0 rgba(0,0,0,0.5) inset;
   }
@@ -103,24 +107,26 @@ const CancelButton = styled.button`
 
 // https://brunch.co.kr/@ebprux/56
 const TimerForm = (props: Iprops) => {
+  const [newid, setNewId] = useState(0);
   const [newTitle, setNewTitle] = useState("");
   const [newHour, setNewHour] = useState(0);
   const [newMin, setNewMin] = useState(0);
   const [newSec, setNewSec] = useState(0);
   const [color, setColor] = useState("#aabbcc");
-
   const dispatch = useDispatch();
   const router = useRouter();
   const timerData: TimerProps[] = useSelector((state: RootState) => state.timer);
+  let data: TimerProps = timerData[0];
 
   useEffect(()=>{
     if(props.type === "edit"){
-      let data = timerData.filter((v)=>v.id === props.dataId);
-      setNewTitle(data[0].title);
-      setNewHour(Math.floor((data[0].time%(60*60*24))/(60*60)));
-      setNewMin(Math.floor((data[0].time%(60*60))/60));
-      setNewSec(data[0].time%60);
-      setColor(data[0].color);
+      data = timerData.filter((v)=>v.id === props.dataId)[0];
+      setNewId(data.id);
+      setNewHour(data.timesplit[0]);
+      setNewMin(data.timesplit[1]);
+      setNewSec(data.timesplit[2]);
+      setNewTitle(data.title);
+      setColor(data.color);
     }
   },[]);
   const onChangeTitle = (e: any) => {
@@ -128,45 +134,45 @@ const TimerForm = (props: Iprops) => {
   };
 
   const onChangeHour = (e: any) => {
-    setNewHour(e.target.value*3600);
+    setNewHour(Number(e.target.value));
   }
 
   const onChangeMin = (e: any) => {
-    setNewMin(e.target.value*60);
+    setNewMin(Number(e.target.value));
   }
 
   const onChangeSec = (e: any) => {
-    setNewSec(e.target.value*1);
+    setNewSec(Number(e.target.value));
   }
 
-  const onSubmit = () => {
+  const onSave = (e: any) => {
+    e.preventDefault();
     dispatch(addTimer({
       id: timerData.length === 0 ? 0 : timerData[timerData.length-1].id+1,
       title: newTitle,
-      time: newHour+newMin+newSec,
+      time: newHour*3600+newMin*60+newSec*1,
+      timesplit:[newHour, newMin, newSec],
       color: color
     }));
     router.push('/timer');
-    console.log("이건 새로 생성");
   }
 
-  const onEdit = () => {
-
-    // 수정 redux action 수정해야함
-    // dispatch(addTimer({
-    //   id: timerData.length === 0 ? 0 : timerData[timerData.length-1].id+1,
-    //   title: newTitle,
-    //   time: newHour+newMin+newSec,
-    //   color: color
-    // }));
-    router.push('/timer');
+  const onEdit = (e: any) => {
+    e.preventDefault();
+      dispatch(editTimer({
+        id: newid,
+        title: newTitle,
+        time: newHour*3600+newMin*60+newSec*1,
+        timesplit:[newHour, newMin, newSec],
+        color: color
+      }));
+      router.push('/timer');
   }
-
   const onCancel = () => {
     router.push('/timer');
   }
   return (
-    <TimerFormContainer onSubmit={props.type==="edit"? onEdit : onSubmit} color={color}>
+    <TimerFormContainer onSubmit={props.type==="edit"? onEdit : onSave} color={color}>
       <TitleInputContainer>
         <InputContainer style={{width:'100%'}}>
           <label style={{marginBottom:'5px'}}>타이틀</label>
@@ -187,16 +193,15 @@ const TimerForm = (props: Iprops) => {
           <input onChange={onChangeSec} style={{height:'30px'}} value={newSec}/>          
         </InputContainer>
       </TimeInputContainer>
-        {/* https://www.npmjs.com/package/react-colorful */}
       <ColorInputContainer>
         <label>타이머 색상</label>
         <div style={{marginTop:'5px'}}>
-          <HexColorPicker style={{width:'auto'}} color={color} onChange={setColor}/>
+          <HexColorPicker style={{width:'auto', height: "150px"}} color={color} onChange={setColor}/>
         </div>
       </ColorInputContainer>
         <ButtonContainer>
-          {props.type === "edit" ? <PrimaryButton onClick={()=>console.log("수정")}>수정</PrimaryButton> : <PrimaryButton onClick={onSubmit}>저장</PrimaryButton>}
-          <CancelButton onClick={onCancel}>취소</CancelButton>
+          <PrimaryButton type="submit" onClick={props.type==='edit' ? onEdit : onSave}>{props.type==='edit' ? "수정" : "저장"}</PrimaryButton>
+          <CancelButton type="button" onClick={onCancel}>취소</CancelButton>
         </ButtonContainer>
     </TimerFormContainer>
   );
