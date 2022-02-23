@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import React, {useState} from 'react';
+import React from 'react';
 import { BiTrash,BiEdit } from 'react-icons/bi';
 import {deleteTimer} from '../modules/timer';
 import Router from 'next/router';

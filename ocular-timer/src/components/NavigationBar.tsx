@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { RiMenuFill, RiCloseFill, RiAddFill } from "react-icons/ri";
-import React, {SetStateAction, useState} from 'react';
+import React, {useState} from 'react';
+
 interface Navigation {
   opened: boolean;
 }
@@ -24,7 +25,6 @@ const MenuButtonContainer = styled.div`
   left: 0;
   z-index: 999;
   height: 50px;
-
 `;
 
 const NavigationContainer = styled.div<Navigation>`

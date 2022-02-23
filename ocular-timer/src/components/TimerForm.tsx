@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useMediaQuery } from "react-responsive";
 import { HexColorPicker } from "react-colorful";
 import { addTimer, editTimer } from '../modules/timer';
 import { RootState } from '../modules';
@@ -48,8 +49,9 @@ const InputContainer = styled.div`
 const TitleInputContainer = styled.div`
   width:250px;
   @media ${(props) => props.theme.mobile} {
-    width: 200px;
-    height: 100px;
+    width: 150px;
+    height: 70px;
+    margin-top: 25px;
   }
 `;
 
@@ -58,8 +60,8 @@ const TimeInputContainer = styled.div`
   justify-content: space-between;
   width: 250px;
   @media ${(props) => props.theme.mobile} {
-    width: 200px;
-    height: 100px;
+    width: 250px;
+    height: 70px;
   }
 `;
 
@@ -78,8 +80,8 @@ const ButtonContainer = styled.div`
   margin: 20px 0 0 0;
 
   @media ${(props) => props.theme.mobile} {
-    margin: 0 0 0 0;
-
+    margin: 10px 0 0 0;
+    width: 150px;
   }
 `;
 
@@ -92,6 +94,11 @@ const PrimaryButton = styled.button`
   :hover{
     box-shadow:-100px 0 0 0 rgba(0,0,0,0.5) inset;
   }
+  @media ${(props) => props.theme.mobile} {
+    font-size: 18px;
+    margin: 0 5px 0 0;
+
+  }
 `;
 
 const CancelButton = styled.button`
@@ -99,10 +106,17 @@ const CancelButton = styled.button`
   color: #3b88d5;
   width: 100px;
   height: 40px;
-
   :hover{
     box-shadow:-100px 0 0 0 rgba(0,0,0,0.5) inset;
   }
+  @media ${(props) => props.theme.mobile} {
+    font-size: 18px;
+  }
+`;
+
+const ColorPicker = styled(HexColorPicker)`
+  width: 100px;
+  height: 20px;
 `;
 
 // https://brunch.co.kr/@ebprux/56
@@ -117,7 +131,9 @@ const TimerForm = (props: Iprops) => {
   const router = useRouter();
   const timerData: TimerProps[] = useSelector((state: RootState) => state.timer);
   let data: TimerProps = timerData[0];
-
+  const isMobile = useMediaQuery({
+    query: "(max-width:767px)"
+  });
   useEffect(()=>{
     if(props.type === "edit"){
       data = timerData.filter((v)=>v.id === props.dataId)[0];
@@ -196,7 +212,8 @@ const TimerForm = (props: Iprops) => {
       <ColorInputContainer>
         <label>타이머 색상</label>
         <div style={{marginTop:'5px'}}>
-          <HexColorPicker style={{width:'auto', height: "150px"}} color={color} onChange={setColor}/>
+        {isMobile ? <HexColorPicker style={{width:'auto', height: "100px"}} color={color} onChange={setColor}/>
+        :           <HexColorPicker style={{width:'auto', height: "250px"}} color={color} onChange={setColor}/>}
         </div>
       </ColorInputContainer>
         <ButtonContainer>
