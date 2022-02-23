@@ -2,18 +2,21 @@ import type { NextPage } from 'next'
 import React, {useEffect, useState} from 'react';
 import TimerClock from '../components/TimerClock';
 import NavigationBar from '../components/NavigationBar';
+import ColorMode from '../components/ColorMode';
 import TimerMenu from '../components/TimerMenu';
 
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../modules';
 
-const PageWrapper = styled.div`
+const PageWrapper = styled.div<{mode: string}>`
   position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content:center;
+  background-color:${props => props.mode === "light" ? "#F8F7F4" : "#1E1E22"};
+  color: ${props => props.mode === "light" ? "#31302E" : "#ccc"};
   width: 100%;
   height: 100%;
 `;
@@ -58,6 +61,8 @@ type TimerProps = {
 
 const timer: NextPage = () => {
   const timerData: TimerProps[] = useSelector((state: RootState) => state.timer);
+  const mode: string = useSelector((state: RootState) => state.mode);
+  
   const [titleClicked, setTitleClicked] = useState(false);
   const [selectedData, setSelectedData] = useState(timerData.length !== 0 ? timerData[0].id : 0);  // 타이머가 없을 때 에러 발생
   const [currentData, setCurrentData] = useState(timerData[0] || null);
@@ -77,8 +82,9 @@ const timer: NextPage = () => {
     }
   },[timerData]);
   return (
-    <PageWrapper>
+    <PageWrapper mode={mode}>
     <NavigationBar timeData={timerData} setSelectedData={setSelectedData}/>
+    <ColorMode />
     {timerData.length === 0 ? null :
           <ClockComponentWrapper>
           <TimerTitle onClick={titleOnclick}>{currentData.title}

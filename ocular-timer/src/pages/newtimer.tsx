@@ -1,12 +1,13 @@
 import type { NextPage } from 'next';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 import TimerForm from '../components/TimerForm';
 import React from 'react';
 
 
-const PageWrapper = styled.div`
-  /* background-color: #121212; */
+const PageWrapper = styled.div<{mode: string}>`
+  background-color:${props => props.mode === "light" ? "#F8F7F4" : "#1E1E22"};
   position: fixed;
   display: flex;
   flex-direction: column;
@@ -16,9 +17,10 @@ const PageWrapper = styled.div`
   height: 100%;
 `;
 const newtimer: NextPage = () => {
+  const mode: string = useSelector((state: RootState) => state.mode);
 
   return (
-    <PageWrapper>
+    <PageWrapper mode={mode}>
       <TimerForm type="add"/>
     </PageWrapper>
   );

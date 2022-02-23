@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from "react-responsive";
 import { IoMdPlay,IoMdPause } from 'react-icons/io';
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 
 interface ClockCircleSvg {
   time: number;
   targetTime: number;
+  mode: string;
 }
 type TimerData = {
   id: number;
@@ -35,7 +38,6 @@ const ClockWrapper = styled.div`
 
 const ClockImgWrapper = styled.div`
   display: flex;
-  /* margin: auto; */
   margin-top: 0;
   width: 800px;
   height: 800px;
@@ -57,6 +59,7 @@ const ClockCircleWrapper = styled.svg<ClockCircleSvg>`
   height: 700px;
   margin: auto;
   transform: rotate(-90deg);
+  stroke: ${props => props.mode === "light" ? "#F8F7F4" : "#1E1E22"};
   @media ${(props) => props.theme.mobile} {
     width: 350px;
     height: 350px;
@@ -87,6 +90,8 @@ const TimerClock = (props: Iprops) => {
   const [className, setClassName] = useState("inner_circle pc");  // 반응형 웹 클래스 name
   const target: number = props.timeData.time;
   const [time, setTime] = useState(target);  // 현재 시간
+  const mode: string = useSelector((state: RootState) => state.mode);
+
   const isMobile = useMediaQuery({
     query: "(max-width:767px)"
   });
@@ -151,7 +156,7 @@ const TimerClock = (props: Iprops) => {
     <>
         <ClockWrapper>
           <ClockImgWrapper>
-            <ClockCircleWrapper targetTime={target} time={time} style={{cursor: 'pointer'}} onClick={onClickTimer}>
+            <ClockCircleWrapper mode={mode} targetTime={target} time={time} style={{cursor: 'pointer'}} onClick={onClickTimer}>
               <circle cx={radius} cy={radius} r={radius} fill={props.timeData.color}/>
               <circle 
               className={className}
