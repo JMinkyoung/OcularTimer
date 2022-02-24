@@ -13,6 +13,8 @@ interface Iprops {
 const ButtonContainer = styled.div<{shown: boolean}>`
   display: flex;
   visibility: ${(props)=>props.shown ? 'visible' : 'hidden'};
+  opacity: ${(props)=>props.shown ? 1 : 0};
+  transition: 0.2s ease-in-out;
   width: 100px;
   justify-content: center;
   align-items: center;

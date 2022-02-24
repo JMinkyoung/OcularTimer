@@ -6,7 +6,7 @@ export const toggle = () =>({
 
 type ModeAction = | ReturnType<typeof toggle>;
 
-const initialState: string = "dark";
+const initialState: string = "light";
 
 const mode = (state: string = initialState, action: ModeAction): string => {
   switch (action.type) {

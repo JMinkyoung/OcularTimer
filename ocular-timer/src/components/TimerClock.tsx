@@ -82,7 +82,7 @@ const TimeInfoWrapper = styled.div<{started: boolean}>`
 const TimerClock = (props: Iprops) => {
   
   const [done, setDone] = useState(false);  // 끝났는지 확인
-  const [test, setTest] = useState("running");
+  const [run, setRun] = useState("running");
   const [pause, setPause] = useState(false);  // 일시정지
   const [started, setStarted] = useState(false);  // 시작했는지 확인
   const [radius, setRadius] = useState(350);  // 반지름
@@ -146,9 +146,9 @@ const TimerClock = (props: Iprops) => {
 
   useEffect(()=>{
     if(pause){
-      setTest("paused");
+      setRun("paused");
     }else{
-      setTest("running");
+      setRun("running");
     }
   },[pause]);
   
@@ -166,7 +166,7 @@ const TimerClock = (props: Iprops) => {
               r= {radius}
               strokeWidth={radius*2}
               strokeDasharray={circumference}
-              style={{animation: !done && time===target ? "none" : `dash ${target}s linear infinite ${test}`,
+              style={{animation: !done && time===target ? "none" : `dash ${target}s linear infinite ${run}`,
                       visibility: done || time===target ? 'hidden' : 'visible',
                       }}
               />
@@ -174,12 +174,9 @@ const TimerClock = (props: Iprops) => {
           </ClockImgWrapper>
           <TimeInfoWrapper started={started}>            
             <div style={{display:'flex', flexDirection:'row'}}>              
-              {Math.floor((target)/60/60) === 0 ? null : <span>{Math.floor((target)/60/60)}시간</span>}
-              {target - Math.floor((target)/60/60)*60*60 === 0 ? null : <span>{Math.floor((target - Math.floor((target)/60/60)*60*60)/60)}분</span>}
-              {target - Math.floor((target)/60/60)*60*60 - Math.floor((target - Math.floor((target)/60/60)*60*60)/60)*60 === 0 ? null : 
-              <span>
-                {target - (Math.floor((target)/60/60)*60*60)-(Math.floor((target - Math.floor((target)/60/60)*60*60)/60)*60)}초
-              </span>}
+              {props.timeData.timesplit[0] === 0 ? null : <span>{props.timeData.timesplit[0]}시간</span>}
+              {props.timeData.timesplit[1] === 0 ? null : <span>{props.timeData.timesplit[1]}분</span>}
+              {props.timeData.timesplit[2] === 0 ? null : <span>{props.timeData.timesplit[2]}초</span>}
             </div>
           </TimeInfoWrapper>
           <ButtonWrapper>

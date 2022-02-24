@@ -42,7 +42,6 @@ const NavigationContainer = styled.div<Navigation>`
 const NaviMenuList = styled.ul<{opened: boolean}>`
   width: 150px;
   padding: 60px 0px 0px 15px;
-  /* margin-left: 10px; */
   opacity: ${(props) => props.opened ? "1" : "0"};
   transition:0.5s ease-in-out;
   color: #F9F7F7;

@@ -114,12 +114,6 @@ const CancelButton = styled.button`
   }
 `;
 
-const ColorPicker = styled(HexColorPicker)`
-  width: 100px;
-  height: 20px;
-`;
-
-// https://brunch.co.kr/@ebprux/56
 const TimerForm = (props: Iprops) => {
   const [newid, setNewId] = useState(0);
   const [newTitle, setNewTitle] = useState("");

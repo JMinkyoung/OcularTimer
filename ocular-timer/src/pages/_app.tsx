@@ -6,12 +6,11 @@ import GlobalStyle from '../../public/styles/global-styles';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from '../modules';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import React from 'react';
 
-const store = createStore(rootReducer,composeWithDevTools());
+const store = createStore(rootReducer);
 const persistor = persistStore(store);
 function MyApp({ Component, pageProps }: AppProps) {
 
