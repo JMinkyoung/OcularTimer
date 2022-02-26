@@ -32,10 +32,8 @@ const SliderContent = styled.div`
   display: table;
   float: left;
   width: 1000px;
-  height: auto;
   @media ${(props) => props.theme.mobile} {
     width: 350px;
-    height: auto;
   }
 `;
 const InfiniteSlider = (props: Iprops) => {
@@ -55,42 +53,26 @@ const InfiniteSlider = (props: Iprops) => {
       }
       result.push(<SliderContent><img key={5} style={{width:"100%"}}src={`/img/pcex1.JPG`}/></SliderContent>)
     }else{
+      result.push(<SliderContent><img key={-1} style={{width:"100%"}}src={`/img/mbex4.JPG`}/></SliderContent>)
       for(let i: number = 1; i<5; i++){
         result.push(<SliderContent><img key={i} src={`/img/mbex${i}.JPG`}/></SliderContent>);
       }
+      result.push(<SliderContent><img key={5} style={{width:"100%"}}src={`/img/mbex1.JPG`}/></SliderContent>)
     }
     return result;
   };
 
-  // useEffect(()=>{
-  //   const interval = setInterval(()=>{
-  //     console.log("dd")
-  //     if(curIdx <= 3){
-  //       setCurIdx(prev => prev+1);
-  //       setTransition(transitionStyle);
-  //     }
-  //     if(curIdx === 3){
-  //       setTimeout(()=>{
-  //         setTransition("");
-  //         setCurIdx(0);
-  //       },transitionSpeed);
-  //       setTransition(transitionStyle);
-  //     }
-  //   },3000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   }
-  // },[curIdx]);
-  // useEffect(()=>{
-  //   setTransition(transitionStyle);
-  //   setInterval(()=>{
-  //     onClickNext();
-  //   },3000);
-  //   return clearInterval();
-  // },[])
+  useEffect(() => {
+    const imageInterval = setInterval(() => {
+      onClickNext();
+    }, 3000);
+    return () => {
+      clearInterval(imageInterval);
+    };
+  }, [curIdx]);
 
   const onClickNext = () => {
-    console.log(curIdx, transition)
+    setTransition(transitionStyle);
     if(curIdx <= 3){
       setCurIdx(prev => prev+1);
       setTransition(transitionStyle);
@@ -102,7 +84,6 @@ const InfiniteSlider = (props: Iprops) => {
       },transitionSpeed);
     }
   }
-
   const onClickPrev = (e: any) => {
     e.preventDefault();
     if(curIdx >= 0){
@@ -116,7 +97,6 @@ const InfiniteSlider = (props: Iprops) => {
       },transitionSpeed);
     }
   }
-
   return (
     <Container>
       <SliderWrapper>
