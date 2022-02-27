@@ -97,7 +97,6 @@ const PrimaryButton = styled.button`
   @media ${(props) => props.theme.mobile} {
     font-size: 18px;
     margin: 0 5px 0 0;
-
   }
 `;
 

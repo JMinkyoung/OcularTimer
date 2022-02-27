@@ -61,7 +61,6 @@ const ListItem = styled.li`
     transform: scaleX(0);
     transition: transform 250ms ease-in-out;
   }
-
   :hover:after{
     transform: scaleX(1);
   }
@@ -73,7 +72,6 @@ const CloseButton = styled(RiCloseFill)`
   color:  #F9F7F7 ;
   cursor: pointer ;
   transition: all 0.3s ease-in-out;
-
   :hover{
     color: #3286E6;
   }

@@ -64,7 +64,7 @@ const timer: NextPage = () => {
   const mode: string = useSelector((state: RootState) => state.mode);
   
   const [titleClicked, setTitleClicked] = useState(false);
-  const [selectedData, setSelectedData] = useState(timerData.length !== 0 ? timerData[0].id : 0);  // 타이머가 없을 때 에러 발생
+  const [selectedData, setSelectedData] = useState(timerData.length !== 0 ? timerData[0].id : 0);
   const [currentData, setCurrentData] = useState(timerData[0] || null);
 
   const titleOnclick = () => {

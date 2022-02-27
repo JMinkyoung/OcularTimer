@@ -18,13 +18,26 @@ const PageWrapper = styled.div`
 
 const MainTitle = styled.h1`
   font-size: 50px;
+  margin-bottom: 20px;
   @media ${(props) => props.theme.mobile} {
+    font-size: 40px;
+    margin-bottom: 5px;
   }
 `;
 
-const ImageContainer = styled.div`
-  display: flex;
-  flex-direction: row;
+const StartButton = styled.button`
+  background-color: #2C4373;
+  color: #ecf0f4;
+  width: 100px;
+  height: 40px;
+  margin: 0 10px 0 0;
+  :hover{
+    box-shadow:-100px 0 0 0 rgba(0,0,0,0.5) inset;
+  }
+  @media ${(props) => props.theme.mobile} {
+    font-size: 25px;
+    margin: 0 5px 0 0;
+  }
 `;
 
 
@@ -38,15 +51,7 @@ const Home: NextPage = () => {
     <PageWrapper>
       <MainTitle>OCT ⏱</MainTitle>
       <InfiniteSlider type={isMobile ? "mobile" : "pc"}/>
-      {/* {isMobile ? <ImageContainer>
-                    <img style={{width: '50%'}} src={'/img/mbex.JPG'}/>
-                    <img style={{width: '50%'}} src={'/img/mbex2.JPG'}/>
-                  </ImageContainer> : 
-                  <ImageContainer>
-                    <img style={{width: '50%'}} src={'/img/pcex.JPG'}/>
-                    <img style={{width: '50%'}} src={'/img/pcex2.JPG'}/>
-                  </ImageContainer>} */}
-      <button onClick={()=>router.push('/timer')}>타이머 페이지로 이동</button>
+      <StartButton onClick={()=>router.push('/timer')}>시작</StartButton>
     </PageWrapper>
   );
 }

@@ -6,6 +6,10 @@ interface Iprops {
 }
 
 const Container = styled.div`
+  height: 550px;
+  @media ${(props) => props.theme.mobile} {
+    height: 570px;
+  }
 `;
 const SliderWrapper = styled.div`
   position: relative;
@@ -16,10 +20,11 @@ const SliderWrapper = styled.div`
     width: 350px;
   }
 `;
-const SliderList = styled.div`
+const SliderList = styled.div<{transition: string}>`
   width: 6000px;
+  -webkit-transition: ${props=> props.transition};
   @media ${(props) => props.theme.mobile} {
-    width: 2100px;
+    width: 3000px;
   }
 `;
 const SliderBox = styled.div`
@@ -55,7 +60,7 @@ const InfiniteSlider = (props: Iprops) => {
     }else{
       result.push(<SliderContent><img key={-1} style={{width:"100%"}}src={`/img/mbex4.JPG`}/></SliderContent>)
       for(let i: number = 1; i<5; i++){
-        result.push(<SliderContent><img key={i} src={`/img/mbex${i}.JPG`}/></SliderContent>);
+        result.push(<SliderContent><img key={i} style={{width:"100%"}} src={`/img/mbex${i}.JPG`}/></SliderContent>);
       }
       result.push(<SliderContent><img key={5} style={{width:"100%"}}src={`/img/mbex1.JPG`}/></SliderContent>)
     }
@@ -101,12 +106,10 @@ const InfiniteSlider = (props: Iprops) => {
     <Container>
       <SliderWrapper>
         <SliderBox>
-          <SliderList style={{transform: `translateX(${(-slideWidth * (curIdx+1))}px)`,transition: transition}}>
+          <SliderList transition={transition} style={{transform: `translateX(${(-slideWidth * (curIdx+1))}px)`}}>
             {rednering()}
           </SliderList>
         </SliderBox>
-        <button onClick={onClickPrev}>prev</button>
-        <button onClick={onClickNext}>next</button> 
       </SliderWrapper>
     </Container>
   );
